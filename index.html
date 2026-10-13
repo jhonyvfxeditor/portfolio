@@ -1,35 +1,3 @@
-O código foi atualizado para puxar a thumbnail automaticamente a partir do link (ou ID) do YouTube e o texto `"PREMIERE PRO + AFTER EFFECTS PIPELINE"` foi removido do player principal.
-
-### O que mudou no código:
-
-* **Remoção do Texto no Player:** A camada `.yt-stage-hud` com a frase `"PREMIERE PRO + AFTER EFFECTS PIPELINE"` foi totalmente removida, deixando apenas a thumbnail limpa e o botão de play amarelo no formato do YouTube.
-
-
-* **Thumbnail 100% Automática via JavaScript:** Você não precisa mais digitar o link da imagem (`[i.ytimg.com/](https://i.ytimg.com/)...`) manualmente em nenhum vídeo. Basta colar o **link completo do YouTube** (ex: `[https://youtu.be/2mLu6PeIaLU](https://youtu.be/2mLu6PeIaLU)` ou `[https://www.youtube.com/watch?v=](https://www.youtube.com/watch?v=)...`) ou apenas o **ID do vídeo** dentro do atributo `data-id=""` no botão do player.
-
-
-* **Sincronização Automática:** O script extrai o ID do vídeo sozinho, gera a imagem de capa em alta resolução (`maxresdefault.jpg`) com fallback automático (`hqdefault.jpg`) e ainda atualiza o botão `"YouTube ↗"` nos cards do portfólio automaticamente.
-
-
-
----
-
-### Como adicionar ou trocar vídeos agora:
-
-Tanto no player principal do topo (Workstation) quanto nos cards do portfólio, você só precisa editar **uma única linha** por vídeo:
-
-```html
-<button class="thumb" type="button" data-id="COLE_O_LINK_OU_ID_DO_YOUTUBE_AQUI" aria-label="Play Video">
-
-```
-
----
-
-### Código HTML Completo Atualizado (`index.html`)
-
-Copie o código abaixo e salve no seu arquivo **`index.html`**:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1187,5 +1155,3 @@ Copie o código abaixo e salve no seu arquivo **`index.html`**:
   </script>
 </body>
 </html>
-
-```
