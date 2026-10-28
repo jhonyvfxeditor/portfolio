@@ -45,15 +45,23 @@
       line-height: 1.55;
       color: var(--text);
       background-color: var(--black);
-      /* Fundo contínuo com malha tática suave e atmosfera integrada */
-      background-image:
-        radial-gradient(1100px 700px at 10% 25%, rgba(44, 100, 168, 0.14), transparent 75%),
-        radial-gradient(1100px 700px at 90% 55%, rgba(27, 47, 99, 0.18), transparent 75%),
-        radial-gradient(900px 600px at 50% 85%, rgba(255, 198, 26, 0.05), transparent 75%),
-        repeating-linear-gradient(90deg, rgba(139, 146, 194, 0.022) 0px, rgba(139, 146, 194, 0.022) 1px, transparent 1px, transparent 64px),
-        repeating-linear-gradient(0deg, rgba(139, 146, 194, 0.022) 0px, rgba(139, 146, 194, 0.022) 1px, transparent 1px, transparent 64px);
-      background-attachment: fixed;
       overflow-x: hidden;
+    }
+
+    /* Camada de fundo fixa acelerada por GPU (evita repaints durante o scroll) */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      transform: translateZ(0);
+      background-color: var(--black);
+      background-image:
+        radial-gradient(900px 600px at 10% 25%, rgba(44, 100, 168, 0.14), transparent 70%),
+        radial-gradient(900px 600px at 90% 55%, rgba(27, 47, 99, 0.18), transparent 70%),
+        radial-gradient(800px 500px at 50% 85%, rgba(255, 198, 26, 0.05), transparent 70%),
+        repeating-linear-gradient(90deg, rgba(139, 146, 194, 0.02) 0px, rgba(139, 146, 194, 0.02) 1px, transparent 1px, transparent 64px),
+        repeating-linear-gradient(0deg, rgba(139, 146, 194, 0.02) 0px, rgba(139, 146, 194, 0.02) 1px, transparent 1px, transparent 64px);
     }
 
     img { max-width: 100%; }
@@ -76,19 +84,20 @@
       position: fixed;
       top: 14px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate3d(-50%, 0, 0);
       z-index: 50;
       display: flex;
       align-items: center;
       gap: .4rem;
       padding: .5rem;
       border-radius: 999px;
-      background: rgba(30, 32, 38, .72);
-      -webkit-backdrop-filter: blur(14px);
-      backdrop-filter: blur(14px);
+      background: rgba(30, 32, 38, .78);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
       border: 1px solid rgba(139, 146, 194, .22);
       box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
       white-space: nowrap;
+      will-change: transform;
     }
 
     .nl {
@@ -127,6 +136,7 @@
     /* ================= Hero ================= */
     .hero {
       position: relative;
+      z-index: 1;
       overflow: hidden;
       padding: 8.5rem 0 10rem;
       text-align: center;
@@ -145,6 +155,11 @@
       opacity: .5;
       animation: twinkle 4s ease-in-out infinite;
     }
+    .hero.paused .stars i,
+    .hero.paused .playhead-mover,
+    .hero.paused .rec-dot {
+      animation-play-state: paused !important;
+    }
     @keyframes twinkle { 0%, 100% { opacity: .15; } 50% { opacity: .85; } }
 
     /* Comic halftone */
@@ -159,20 +174,19 @@
       pointer-events: none;
     }
 
-    /* Halftones laterais com máscara tripla para nunca gerarem linhas duras */
+    /* Halftones laterais leves (sem mix-blend-mode pesado) */
     .section-halftone-right,
     .section-halftone-left {
       position: absolute;
       top: 0; bottom: 0;
-      width: 35%;
+      width: 32%;
       pointer-events: none;
       z-index: 1;
-      mix-blend-mode: screen;
     }
 
     .section-halftone-right {
       right: 0;
-      background-image: radial-gradient(circle, rgba(44, 100, 168, .22) 1.6px, transparent 2.4px);
+      background-image: radial-gradient(circle, rgba(44, 100, 168, .2) 1.6px, transparent 2.4px);
       background-size: 18px 18px;
       -webkit-mask-image: radial-gradient(ellipse 90% 45% at 100% 50%, #000 0%, transparent 75%);
       mask-image: radial-gradient(ellipse 90% 45% at 100% 50%, #000 0%, transparent 75%);
@@ -180,7 +194,7 @@
 
     .section-halftone-left {
       left: 0;
-      background-image: radial-gradient(circle, rgba(255, 198, 26, .14) 1.5px, transparent 2.3px);
+      background-image: radial-gradient(circle, rgba(255, 198, 26, .12) 1.5px, transparent 2.3px);
       background-size: 16px 16px;
       -webkit-mask-image: radial-gradient(ellipse 90% 45% at 0% 50%, #000 0%, transparent 75%);
       mask-image: radial-gradient(ellipse 90% 45% at 0% 50%, #000 0%, transparent 75%);
@@ -203,7 +217,7 @@
       aspect-ratio: 1;
       padding: 3px;
       background: var(--gold);
-      filter: drop-shadow(0 0 26px rgba(255, 198, 26, .28));
+      box-shadow: 0 0 26px rgba(255, 198, 26, .28);
     }
     .portrait img {
       display: block;
@@ -258,10 +272,10 @@
       text-decoration: none;
       color: #000;
       background: var(--gold);
-      transition: transform .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+      transition: transform .18s ease, background .18s ease, color .18s ease;
     }
     .btn svg { width: 1.2em; height: 1.2em; flex: none; fill: currentColor; }
-    .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 0 -2px rgba(0, 0, 0, .55); }
+    .btn:hover { transform: translateY(-3px); }
     .btn:active { transform: translateY(0); }
 
     .btn-gold:hover { background: #fff; }
@@ -282,22 +296,15 @@
       border-radius: 8px;
       background: var(--panel);
       border: 2px solid var(--cape);
-      box-shadow:
-        0 25px 80px rgba(0, 0, 0, 0.9),
-        0 0 50px rgba(44, 100, 168, 0.45),
-        0 0 95px rgba(20, 38, 77, 0.75);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(44, 100, 168, 0.35);
       overflow: hidden;
       position: relative;
       text-align: left;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      transition: border-color 0.25s ease;
     }
 
     .workstation-rig:hover {
       border-color: var(--gold);
-      box-shadow:
-        0 25px 80px rgba(0, 0, 0, 0.95),
-        0 0 55px rgba(44, 100, 168, 0.65),
-        0 0 25px rgba(255, 198, 26, 0.25);
     }
 
     .yt-stage {
@@ -428,17 +435,24 @@
       color: #ffe699;
     }
 
+    /* Agulha acelerada via GPU usando transform: translateX em vez de left */
+    .playhead-mover {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      will-change: transform;
+      animation: scrubTimeline 7s ease-in-out infinite alternate;
+    }
+
     .playhead-line {
       position: absolute;
       top: 0;
       bottom: 0;
-      left: 35%;
+      left: 0;
       width: 2px;
       background: var(--gold);
-      box-shadow: 0 0 12px var(--gold), 0 0 24px var(--cape);
-      z-index: 10;
-      pointer-events: none;
-      animation: scrubTimeline 7s ease-in-out infinite alternate;
+      box-shadow: 0 0 10px var(--gold);
     }
 
     .playhead-cap {
@@ -459,18 +473,20 @@
       height: 10px;
       border-radius: 50%;
       background: #FFF;
-      box-shadow: 0 0 14px #FFF, 0 0 25px var(--gold);
+      box-shadow: 0 0 12px #FFF;
     }
 
     @keyframes scrubTimeline {
-      0% { left: 18%; }
-      45% { left: 52%; }
-      70% { left: 48%; }
-      100% { left: 82%; }
+      0% { transform: translate3d(18%, 0, 0); }
+      45% { transform: translate3d(52%, 0, 0); }
+      70% { transform: translate3d(48%, 0, 0); }
+      100% { transform: translate3d(82%, 0, 0); }
     }
 
-    /* Hazard-stripe divider (usado apenas no topo e rodapé com fade suave) */
+    /* Hazard-stripe divider */
     .hazard {
+      position: relative;
+      z-index: 1;
       height: 6px;
       background: repeating-linear-gradient(-45deg, var(--gold) 0 14px, transparent 14px 28px);
       opacity: .28;
@@ -478,26 +494,13 @@
       mask-image: linear-gradient(90deg, transparent 5%, #000 35%, #000 65%, transparent 95%);
     }
 
-    /* ================= Sections (Com Blend Contínuo e Sem Bordas Rígidas) ================= */
+    /* ================= Sections (Com Blend Suave e Sem Peso de GPU) ================= */
     .section {
       position: relative;
+      z-index: 1;
       padding: 4.5rem 0;
-    }
-
-    /* Camada de iluminação atmosférica esfumaçada nas bordas superior e inferior */
-    .section::before {
-      content: "";
-      position: absolute;
-      inset: -80px 0;
-      pointer-events: none;
-      z-index: 0;
       background:
-        radial-gradient(750px 380px at 50% 50%, rgba(44, 100, 168, .15), transparent 75%),
-        radial-gradient(550px 300px at 18% 50%, rgba(20, 38, 77, .28), transparent 75%),
-        radial-gradient(550px 300px at 82% 50%, rgba(27, 47, 99, .24), transparent 75%);
-      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%);
-      mask-image: linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%);
-      mix-blend-mode: screen;
+        radial-gradient(65% 50% at 50% 50%, rgba(44, 100, 168, .12), transparent 100%);
     }
 
     .head { text-align: center; margin-bottom: 2.6rem; }
@@ -524,8 +527,9 @@
     .mission {
       padding: 3px;
       background: var(--slate);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, .65), 0 0 28px rgba(44, 100, 168, .16);
-      transition: transform .22s ease, background .22s ease, filter .22s ease, box-shadow .22s ease;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .6);
+      transition: transform .22s ease, background .22s ease;
+      will-change: transform;
     }
     .mission-inner { --cut: 12px; display: flex; flex-direction: column; height: 100%; background: var(--panel); }
 
@@ -557,11 +561,11 @@
     }
     .yt:hover { text-decoration: underline; }
 
-    .player { position: relative; aspect-ratio: 16 / 9; background: radial-gradient(circle, var(--night-2) 0%, var(--black) 100%); overflow: hidden; }
-    .player-short { position: relative; aspect-ratio: 9 / 16; background: radial-gradient(circle, var(--night-2) 0%, var(--black) 100%); overflow: hidden; }
+    .player { position: relative; aspect-ratio: 16 / 9; background: var(--black); overflow: hidden; }
+    .player-short { position: relative; aspect-ratio: 9 / 16; background: var(--black); overflow: hidden; }
 
     .thumb { all: unset; box-sizing: border-box; position: absolute; inset: 0; cursor: pointer; display: block; }
-    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease, filter .3s ease; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
     .thumb::after {
       content: "";
       position: absolute; inset: 0;
@@ -577,11 +581,9 @@
       place-items: center;
       border-radius: 14px;
       color: var(--gold);
-      background: rgba(8, 9, 11, .78);
-      border: 1px solid rgba(255, 198, 26, .4);
-      -webkit-backdrop-filter: blur(6px);
-      backdrop-filter: blur(6px);
-      transform: translate(-50%, -50%);
+      background: rgba(8, 9, 11, .86);
+      border: 1px solid rgba(255, 198, 26, .45);
+      transform: translate3d(-50%, -50%, 0);
       transition: background .2s ease, color .2s ease, transform .2s ease;
     }
     .play svg { width: 26px; height: 26px; fill: currentColor; }
@@ -594,7 +596,8 @@
       z-index: 2;
       opacity: 0;
       pointer-events: none;
-      transition: opacity .25s ease, inset .25s ease;
+      transition: opacity .22s ease, transform .22s ease;
+      transform: scale(0.96);
       background:
         linear-gradient(var(--c), var(--c)) 0 0 / 24px 3px,
         linear-gradient(var(--c), var(--c)) 0 0 / 3px 24px,
@@ -610,27 +613,25 @@
     .player iframe, .player-short iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
     .mission:hover, .mission:focus-within {
-      transform: translateY(-6px);
+      transform: translate3d(0, -6px, 0);
       background: var(--gold);
-      filter: drop-shadow(0 14px 0 rgba(0, 0, 0, .5));
     }
     .mission:hover .mission-bar, .mission:focus-within .mission-bar { background: var(--gold); border-color: var(--gold); color: #000; }
     .mission:hover .mission-bar::before, .mission:focus-within .mission-bar::before { background: var(--night); box-shadow: 0 0 0 3px rgba(20, 38, 77, .3); }
     .mission:hover .yt, .mission:focus-within .yt { color: #000; }
-    .mission:hover .thumb img, .yt-stage:hover .thumb img { transform: scale(1.06); }
-    .mission:hover .play, .yt-stage:hover .play, .thumb:focus-visible .play { background: var(--gold); color: #000; transform: translate(-50%, -50%) scale(1.1); }
-    .mission:hover .brackets, .yt-stage:hover .brackets, .thumb:focus-visible .brackets { opacity: 1; inset: 10px; }
+    .mission:hover .thumb img, .yt-stage:hover .thumb img { transform: scale(1.05); }
+    .mission:hover .play, .yt-stage:hover .play, .thumb:focus-visible .play { background: var(--gold); color: #000; transform: translate3d(-50%, -50%, 0) scale(1.1); }
+    .mission:hover .brackets, .yt-stage:hover .brackets, .thumb:focus-visible .brackets { opacity: 1; transform: scale(1); }
 
     /* ---- Client Card (Live YouTube Channel) ---- */
     .client-card-link {
       text-decoration: none;
       color: var(--text);
       display: inline-block;
-      transition: transform .22s ease, filter .22s ease;
+      transition: transform .22s ease;
     }
     .client-card-link:hover {
-      transform: translateY(-5px);
-      filter: drop-shadow(0 12px 25px rgba(255, 198, 26, .2));
+      transform: translate3d(0, -5px, 0);
     }
     .client-card {
       display: flex;
@@ -707,7 +708,7 @@
       padding: 3px;
       background: linear-gradient(135deg, var(--cape), var(--gold) 50%, var(--slate));
       --cut: 18px;
-      box-shadow: 0 20px 55px rgba(0, 0, 0, .75), 0 0 35px rgba(44, 100, 168, .2);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .7);
     }
     .about {
       --cut: 16px;
@@ -752,7 +753,7 @@
       padding: 3px;
       background: linear-gradient(135deg, var(--gold), var(--cape) 45%, var(--night));
       --cut: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, .8), 0 0 40px rgba(255, 198, 26, .15);
+      box-shadow: 0 16px 45px rgba(0, 0, 0, .75);
     }
     .contact {
       --cut: 18px;
@@ -771,7 +772,7 @@
     .contact .actions { margin-top: 1.6rem; }
 
     /* ---- Footer ---- */
-    footer { padding: 2rem 0 2.4rem; text-align: center; background: transparent; }
+    footer { position: relative; z-index: 1; padding: 2rem 0 2.4rem; text-align: center; background: transparent; }
     .foot-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1rem; padding: 0; margin: 1.6rem 0 0; list-style: none; }
     .foot-nav li { display: flex; align-items: center; gap: 1rem; }
     .foot-nav li + li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
@@ -784,7 +785,7 @@
       --cut: 10px;
       position: fixed;
       left: 50%; bottom: 1.5rem;
-      transform: translate(-50%, 140%);
+      transform: translate3d(-50%, 140%, 0);
       padding: .7rem 1.2rem;
       font-family: var(--font-display);
       font-size: 1.1rem;
@@ -796,12 +797,12 @@
       z-index: 60;
     }
     .toast.show { 
-      transform: translate(-50%, 0); 
+      transform: translate3d(-50%, 0, 0); 
       opacity: 1;
     }
 
     /* ---- Scroll reveal ---- */
-    .js .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .js .reveal { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity .5s ease, transform .5s ease; }
     .js .reveal.in { opacity: 1; transform: none; }
 
     /* ================= Responsive ================= */
@@ -834,6 +835,9 @@
 </head>
 
 <body>
+  <!-- Camada de fundo isolada na GPU -->
+  <div class="bg-canvas" aria-hidden="true"></div>
+
   <nav class="nav" aria-label="Main">
     <a class="nl nl-home" href="#home">Home</a>
     <a class="nl" href="#longform">Long-form</a>
@@ -851,7 +855,7 @@
     <div class="halftone" aria-hidden="true"></div>
 
     <div class="wrap hero-content">
-      <div class="portrait cut"><img src="Profile.jpg" alt="Jhony VFX"></div>
+      <div class="portrait cut"><img src="Profile.jpg" alt="Jhony VFX" decoding="async"></div>
       <h1>Jhony VFX | Video Editor</h1>
       <div class="actions">
         <a class="btn btn-gold cut" href="#longform">View Portfolio
@@ -864,7 +868,7 @@
       <div class="workstation-rig">
         <div class="yt-stage player">
           <button class="thumb" type="button" data-id="E4XdUcD8rD4" aria-label="Play Showreel">
-            <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Showreel thumbnail">
+            <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Showreel thumbnail" decoding="async">
             <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
             <span class="brackets" aria-hidden="true"></span>
           </button>
@@ -872,9 +876,11 @@
 
         <!-- Premiere Pro Multi-Track Timeline Fusion -->
         <div class="premiere-timeline">
-          <div class="playhead-line">
-            <div class="playhead-cap"></div>
-            <div class="playhead-spark"></div>
+          <div class="playhead-mover">
+            <div class="playhead-line">
+              <div class="playhead-cap"></div>
+              <div class="playhead-spark"></div>
+            </div>
           </div>
 
           <div class="timeline-header">
@@ -960,7 +966,7 @@
             </div>
             <div class="player">
               <button class="thumb" type="button" data-id="sXsU-hm3DoA" aria-label="Play Mission 1">
-                <img src="https://i.ytimg.com/vi/sXsU-hm3DoA/hqdefault.jpg" alt="Mission 1 thumbnail" loading="lazy">
+                <img src="https://i.ytimg.com/vi/sXsU-hm3DoA/hqdefault.jpg" alt="Mission 1 thumbnail" loading="lazy" decoding="async">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -976,7 +982,7 @@
             </div>
             <div class="player">
               <button class="thumb" type="button" data-id="m_-s-QOl-8U" aria-label="Play Mission 2">
-                <img src="https://i.ytimg.com/vi/m_-s-QOl-8U/hqdefault.jpg" alt="Mission 2 thumbnail" loading="lazy">
+                <img src="https://i.ytimg.com/vi/m_-s-QOl-8U/hqdefault.jpg" alt="Mission 2 thumbnail" loading="lazy" decoding="async">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -992,7 +998,7 @@
             </div>
             <div class="player">
               <button class="thumb" type="button" data-id="E4XdUcD8rD4" aria-label="Play Mission 3">
-                <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Mission 3 thumbnail" loading="lazy">
+                <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Mission 3 thumbnail" loading="lazy" decoding="async">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1013,7 +1019,7 @@
       </div>
 
       <div class="grid reveal">
-        <!-- Short 1: Troque o link ou ID em data-id pelo link do seu Short -->
+        <!-- Short 1 -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
@@ -1021,7 +1027,7 @@
             </div>
             <div class="player-short">
               <button class="thumb" type="button" data-id="https://youtube.com/shorts/_vyqTx5pIJU?feature=share" aria-label="Play Short 1">
-                <img src="" alt="Short 1 thumbnail" loading="lazy">
+                <img src="" alt="Short 1 thumbnail" loading="lazy" decoding="async">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1029,7 +1035,7 @@
           </div>
         </article>
 
-        <!-- Short 2: Troque o link ou ID em data-id pelo link do seu Short -->
+        <!-- Short 2 -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
@@ -1037,7 +1043,7 @@
             </div>
             <div class="player-short">
               <button class="thumb" type="button" data-id="https://youtube.com/shorts/25MVgNW1imk?feature=share" aria-label="Play Short 2">
-                <img src="" alt="Short 2 thumbnail" loading="lazy">
+                <img src="" alt="Short 2 thumbnail" loading="lazy" decoding="async">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1045,7 +1051,7 @@
           </div>
         </article>
 
-        <!-- Short 3: Troque o link ou ID em data-id pelo link do seu Short -->
+        <!-- Short 3 -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
@@ -1053,7 +1059,7 @@
             </div>
             <div class="player-short">
               <button class="thumb" type="button" data-id="https://youtube.com/shorts/t2hdQiUSsTk?feature=share" aria-label="Play Short 3">
-                <img src="" alt="Short 3 thumbnail" loading="lazy">
+                <img src="" alt="Short 3 thumbnail" loading="lazy" decoding="async">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1077,7 +1083,7 @@
           <div class="about-box cut">
             <div class="client-card cut">
               <div class="client-avatar-wrap">
-                <img class="client-avatar" id="clientAvatar" src="https://unavatar.io/youtube/GTAJailbreak" alt="GTAJailbreak Avatar">
+                <img class="client-avatar" id="clientAvatar" src="https://unavatar.io/youtube/GTAJailbreak" alt="GTAJailbreak Avatar" loading="lazy" decoding="async">
               </div>
               <div class="client-info">
                 <h3 class="client-name">GTAJailbreak</h3>
@@ -1214,17 +1220,43 @@
       setInterval(fetchLiveChannelData, 60000);
     })();
 
-    /* ---------- Live Premiere Pro Timecode Counter ---------- */
+    /* ---------- Live Premiere Pro Timecode + Pausa Automática Fora de Tela ---------- */
     (function () {
       const tcEl = document.getElementById('timecodeDisplay');
-      if (!tcEl) return;
+      const heroEl = document.getElementById('home');
+      if (!tcEl || !heroEl) return;
+
       let frame = 0;
-      setInterval(function () {
-        frame = (frame + 1) % 60;
-        const sec = String(19 + Math.floor(frame / 30)).padStart(2, '0');
-        const f = String(frame).padStart(2, '0');
-        tcEl.textContent = '00:04:' + sec + ':' + f;
-      }, 50);
+      let timer = null;
+
+      function startTimer() {
+        if (timer) return;
+        timer = setInterval(function () {
+          frame = (frame + 1) % 60;
+          const sec = String(19 + Math.floor(frame / 30)).padStart(2, '0');
+          const f = String(frame).padStart(2, '0');
+          tcEl.textContent = '00:04:' + sec + ':' + f;
+        }, 65);
+      }
+
+      function stopTimer() {
+        clearInterval(timer);
+        timer = null;
+      }
+
+      const heroObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            heroEl.classList.remove('paused');
+            startTimer();
+          } else {
+            heroEl.classList.add('paused');
+            stopTimer();
+          }
+        });
+      }, { threshold: 0.05 });
+
+      heroObserver.observe(heroEl);
     })();
 
     /* ---------- Seeded random (so the skyline always looks the same) ---------- */
@@ -1237,11 +1269,12 @@
       };
     }
 
-    /* ---------- Twinkling stars ---------- */
+    /* ---------- Twinkling stars (Otimizadas) ---------- */
     (function () {
       const box = document.getElementById('stars');
       const r = rng(21);
-      for (let i = 0; i < 46; i++) {
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 28; i++) {
         const s = document.createElement('i');
         s.style.left = (r() * 100) + '%';
         s.style.top = (r() * 70) + '%';
@@ -1249,8 +1282,9 @@
         s.style.width = s.style.height = size + 'px';
         s.style.animationDelay = (r() * 4).toFixed(2) + 's';
         s.style.animationDuration = (3 + r() * 3).toFixed(2) + 's';
-        box.appendChild(s);
+        frag.appendChild(s);
       }
+      box.appendChild(frag);
     })();
 
     /* ---------- Gotham skyline ---------- */
@@ -1306,7 +1340,7 @@
 
       build();
       let t;
-      window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(build, 150); });
+      window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(build, 150); }, { passive: true });
     })();
 
     /* ---------- Extrator Inteligente de ID + Correção de Thumbnails Cinzas ---------- */
