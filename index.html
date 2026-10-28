@@ -16,19 +16,6 @@
   <script>document.documentElement.classList.add('js');</script>
 
   <style>
-    /* ------------------------------------------------------------------
-       TIP: to use the real Pricedown font (GTA), add the font file to the
-       project and uncomment the block below. It is already first in the
-       --font-display list, so it will be picked up automatically.
-
-       @font-face {
-         font-family: "Pricedown";
-         src: url("pricedown.woff2") format("woff2");
-         font-display: swap;
-       }
-       Without the file, the site falls back to "Lilita One".
-    ------------------------------------------------------------------- */
-
     :root {
       --charcoal-top: #2c2d31;
       --charcoal: #17181b;
@@ -57,13 +44,21 @@
       font-size: 1.05rem;
       line-height: 1.55;
       color: var(--text);
-      background: var(--black);
+      background-color: var(--black);
+      /* Fundo contínuo com malha tática suave e atmosfera integrada */
+      background-image:
+        radial-gradient(1100px 700px at 10% 25%, rgba(44, 100, 168, 0.14), transparent 75%),
+        radial-gradient(1100px 700px at 90% 55%, rgba(27, 47, 99, 0.18), transparent 75%),
+        radial-gradient(900px 600px at 50% 85%, rgba(255, 198, 26, 0.05), transparent 75%),
+        repeating-linear-gradient(90deg, rgba(139, 146, 194, 0.022) 0px, rgba(139, 146, 194, 0.022) 1px, transparent 1px, transparent 64px),
+        repeating-linear-gradient(0deg, rgba(139, 146, 194, 0.022) 0px, rgba(139, 146, 194, 0.022) 1px, transparent 1px, transparent 64px);
+      background-attachment: fixed;
       overflow-x: hidden;
     }
 
     img { max-width: 100%; }
 
-    .wrap { width: min(1180px, 100% - 2rem); margin-inline: auto; }
+    .wrap { width: min(1180px, 100% - 2rem); margin-inline: auto; position: relative; z-index: 2; }
 
     section[id] { scroll-margin-top: 5.5rem; }
 
@@ -162,6 +157,33 @@
       -webkit-mask-image: linear-gradient(45deg, #000 0%, transparent 70%);
       mask-image: linear-gradient(45deg, #000 0%, transparent 70%);
       pointer-events: none;
+    }
+
+    /* Halftones laterais com máscara tripla para nunca gerarem linhas duras */
+    .section-halftone-right,
+    .section-halftone-left {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 35%;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: screen;
+    }
+
+    .section-halftone-right {
+      right: 0;
+      background-image: radial-gradient(circle, rgba(44, 100, 168, .22) 1.6px, transparent 2.4px);
+      background-size: 18px 18px;
+      -webkit-mask-image: radial-gradient(ellipse 90% 45% at 100% 50%, #000 0%, transparent 75%);
+      mask-image: radial-gradient(ellipse 90% 45% at 100% 50%, #000 0%, transparent 75%);
+    }
+
+    .section-halftone-left {
+      left: 0;
+      background-image: radial-gradient(circle, rgba(255, 198, 26, .14) 1.5px, transparent 2.3px);
+      background-size: 16px 16px;
+      -webkit-mask-image: radial-gradient(ellipse 90% 45% at 0% 50%, #000 0%, transparent 75%);
+      mask-image: radial-gradient(ellipse 90% 45% at 0% 50%, #000 0%, transparent 75%);
     }
 
     .skyline {
@@ -297,7 +319,6 @@
       background: #000;
     }
 
-    /* Overlay HUD Azul sobre a Thumbnail antes do clique */
     .yt-stage-hud {
       position: absolute;
       inset: 0;
@@ -418,7 +439,7 @@
       color: var(--gold);
     }
 
-    /* Premiere Pro Multi-Track Timeline Fusion (Azul / Tático) */
+    /* Premiere Pro Multi-Track Timeline Fusion */
     .premiere-timeline {
       background: #080b12;
       border-top: 2px solid var(--slate);
@@ -522,7 +543,6 @@
       color: #ffe699;
     }
 
-    /* Animated Playhead Needle with Spark */
     .playhead-line {
       position: absolute;
       top: 0;
@@ -564,22 +584,35 @@
       100% { left: 82%; }
     }
 
-    /* Hazard-stripe divider (fades at the edges) */
+    /* Hazard-stripe divider (usado apenas no topo e rodapé com fade suave) */
     .hazard {
-      height: 8px;
-      background: repeating-linear-gradient(-45deg, var(--gold) 0 14px, #000 14px 28px);
-      opacity: .5;
-      -webkit-mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
-      mask-image: linear-gradient(90deg, transparent, #000 22%, #000 78%, transparent);
+      height: 6px;
+      background: repeating-linear-gradient(-45deg, var(--gold) 0 14px, transparent 14px 28px);
+      opacity: .28;
+      -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 35%, #000 65%, transparent 95%);
+      mask-image: linear-gradient(90deg, transparent 5%, #000 35%, #000 65%, transparent 95%);
     }
 
-    /* ================= Sections ================= */
+    /* ================= Sections (Com Blend Contínuo e Sem Bordas Rígidas) ================= */
     .section {
       position: relative;
-      padding: 5rem 0;
+      padding: 4.5rem 0;
+    }
+
+    /* Camada de iluminação atmosférica esfumaçada nas bordas superior e inferior */
+    .section::before {
+      content: "";
+      position: absolute;
+      inset: -80px 0;
+      pointer-events: none;
+      z-index: 0;
       background:
-        radial-gradient(700px 300px at 50% 0%, rgba(44, 100, 168, .14), transparent 70%),
-        var(--black);
+        radial-gradient(750px 380px at 50% 50%, rgba(44, 100, 168, .15), transparent 75%),
+        radial-gradient(550px 300px at 18% 50%, rgba(20, 38, 77, .28), transparent 75%),
+        radial-gradient(550px 300px at 82% 50%, rgba(27, 47, 99, .24), transparent 75%);
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, #000 28%, #000 72%, transparent 100%);
+      mix-blend-mode: screen;
     }
 
     .head { text-align: center; margin-bottom: 2.6rem; }
@@ -591,7 +624,7 @@
       font-size: clamp(2rem, 4.6vw, 3.2rem);
       line-height: 1.05;
       color: #fff;
-      text-shadow: 2px 2px 0 var(--night-2);
+      text-shadow: 3px 3px 0 var(--cape), 5px 5px 0 #000;
     }
 
     .head p { margin: .7rem auto 0; max-width: 46ch; color: var(--dusk); }
@@ -606,7 +639,8 @@
     .mission {
       padding: 3px;
       background: var(--slate);
-      transition: transform .22s ease, background .22s ease, filter .22s ease;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .65), 0 0 28px rgba(44, 100, 168, .16);
+      transition: transform .22s ease, background .22s ease, filter .22s ease, box-shadow .22s ease;
     }
     .mission-inner { --cut: 12px; display: flex; flex-direction: column; height: 100%; background: var(--panel); }
 
@@ -638,8 +672,8 @@
     }
     .yt:hover { text-decoration: underline; }
 
-    .player { position: relative; aspect-ratio: 16 / 9; background: #000; overflow: hidden; }
-    .player-short { position: relative; aspect-ratio: 9 / 16; background: #000; overflow: hidden; }
+    .player { position: relative; aspect-ratio: 16 / 9; background: radial-gradient(circle, var(--night-2) 0%, var(--black) 100%); overflow: hidden; }
+    .player-short { position: relative; aspect-ratio: 9 / 16; background: radial-gradient(circle, var(--night-2) 0%, var(--black) 100%); overflow: hidden; }
 
     .thumb { all: unset; box-sizing: border-box; position: absolute; inset: 0; cursor: pointer; display: block; }
     .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease, filter .3s ease; }
@@ -658,7 +692,8 @@
       place-items: center;
       border-radius: 14px;
       color: var(--gold);
-      background: rgba(8, 9, 11, .72);
+      background: rgba(8, 9, 11, .78);
+      border: 1px solid rgba(255, 198, 26, .4);
       -webkit-backdrop-filter: blur(6px);
       backdrop-filter: blur(6px);
       transform: translate(-50%, -50%);
@@ -701,14 +736,100 @@
     .mission:hover .play, .thumb:focus-visible .play { background: var(--gold); color: #000; transform: translate(-50%, -50%) scale(1.1); }
     .mission:hover .brackets, .thumb:focus-visible .brackets { opacity: 1; inset: 10px; }
 
+    /* ---- Client Card (Live YouTube Channel) ---- */
+    .client-card-link {
+      text-decoration: none;
+      color: var(--text);
+      display: inline-block;
+      transition: transform .22s ease, filter .22s ease;
+    }
+    .client-card-link:hover {
+      transform: translateY(-5px);
+      filter: drop-shadow(0 12px 25px rgba(255, 198, 26, .2));
+    }
+    .client-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.5rem 2rem;
+      min-width: 320px;
+      background:
+        radial-gradient(300px 180px at 100% 0%, rgba(44, 100, 168, .35), transparent 70%),
+        var(--panel);
+    }
+    .client-avatar-wrap {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      flex: none;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--cape));
+      box-shadow: 0 0 20px rgba(255, 198, 26, .25);
+    }
+    .client-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--night);
+      display: block;
+    }
+    .client-info {
+      text-align: left;
+    }
+    .client-name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #fff;
+      letter-spacing: .02em;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .client-handle {
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      color: var(--gold);
+      margin-top: .15rem;
+    }
+    .client-subs {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      margin-top: .55rem;
+      padding: .3rem .7rem;
+      border-radius: 4px;
+      background: rgba(20, 38, 77, .85);
+      border: 1px solid var(--cape);
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff3b3b;
+      box-shadow: 0 0 8px #ff3b3b;
+      animation: pulseDot 1.4s infinite;
+    }
+
     /* ---- About ---- */
-    .about-box { padding: 3px; background: linear-gradient(135deg, var(--slate), var(--night) 60%, var(--slate)); --cut: 18px; }
+    .about-box {
+      padding: 3px;
+      background: linear-gradient(135deg, var(--cape), var(--gold) 50%, var(--slate));
+      --cut: 18px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, .75), 0 0 35px rgba(44, 100, 168, .2);
+    }
     .about {
       --cut: 16px;
       position: relative;
       padding: 2.6rem 2.4rem;
       background:
-        radial-gradient(500px 260px at 100% 0%, rgba(44, 100, 168, .25), transparent 70%),
+        radial-gradient(500px 260px at 100% 0%, rgba(44, 100, 168, .28), transparent 70%),
         var(--panel);
       overflow: hidden;
     }
@@ -742,7 +863,12 @@
     .tool span { font-size: .9rem; color: var(--dusk); }
 
     /* ---- Contact ---- */
-    .contact-box { padding: 3px; background: linear-gradient(135deg, var(--gold), var(--slate) 40%, var(--night)); --cut: 20px; }
+    .contact-box {
+      padding: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--cape) 45%, var(--night));
+      --cut: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .8), 0 0 40px rgba(255, 198, 26, .15);
+    }
     .contact {
       --cut: 18px;
       position: relative;
@@ -760,7 +886,7 @@
     .contact .actions { margin-top: 1.6rem; }
 
     /* ---- Footer ---- */
-    footer { padding: 2rem 0 2.4rem; text-align: center; background: var(--black); }
+    footer { padding: 2rem 0 2.4rem; text-align: center; background: transparent; }
     .foot-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1rem; padding: 0; margin: 1.6rem 0 0; list-style: none; }
     .foot-nav li { display: flex; align-items: center; gap: 1rem; }
     .foot-nav li + li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
@@ -812,7 +938,7 @@
       .rec-badge, .fps-badge, .retention-pill { font-size: 0.62rem; padding: 4px 8px; }
       .unmute-badge { font-size: 0.7rem; padding: 10px 16px; }
 
-      .section { padding: 3.6rem 0; }
+      .section { padding: 3.2rem 0; }
       .about { padding: 2rem 1.3rem; }
       .tools { grid-template-columns: 1fr; }
       h1 { text-shadow: 2px 2px 0 var(--cape), 4px 4px 0 #000; }
@@ -857,8 +983,7 @@
       <div class="workstation-rig">
         <div class="yt-stage player">
           <button class="thumb" type="button" data-id="2mLu6PeIaLU" aria-label="Play Showreel">
-            <img src="https://i.ytimg.com/vi/2mLu6PeIaLU/maxresdefault.jpg" alt="Showreel thumbnail"
-                 onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/2mLu6PeIaLU/hqdefault.jpg'">
+            <img src="https://i.ytimg.com/vi/2mLu6PeIaLU/hqdefault.jpg" alt="Showreel thumbnail">
 
             <div class="yt-stage-hud">
               <div class="yt-top-bar">
@@ -959,6 +1084,7 @@
 
   <!-- ================= LONG-FORM ================= -->
   <section id="longform" class="section">
+    <div class="section-halftone-right" aria-hidden="true"></div>
     <div class="wrap">
       <div class="head reveal">
         <h2>Long-form</h2>
@@ -974,8 +1100,7 @@
             </div>
             <div class="player">
               <button class="thumb" type="button" data-id="sXsU-hm3DoA" aria-label="Play Mission 1">
-                <img src="https://i.ytimg.com/vi/sXsU-hm3DoA/maxresdefault.jpg" alt="Mission 1 thumbnail" loading="lazy"
-                     onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/sXsU-hm3DoA/hqdefault.jpg'">
+                <img src="https://i.ytimg.com/vi/sXsU-hm3DoA/hqdefault.jpg" alt="Mission 1 thumbnail" loading="lazy">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -991,8 +1116,7 @@
             </div>
             <div class="player">
               <button class="thumb" type="button" data-id="m_-s-QOl-8U" aria-label="Play Mission 2">
-                <img src="https://i.ytimg.com/vi/m_-s-QOl-8U/maxresdefault.jpg" alt="Mission 2 thumbnail" loading="lazy"
-                     onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/m_-s-QOl-8U/hqdefault.jpg'">
+                <img src="https://i.ytimg.com/vi/m_-s-QOl-8U/hqdefault.jpg" alt="Mission 2 thumbnail" loading="lazy">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1008,8 +1132,7 @@
             </div>
             <div class="player">
               <button class="thumb" type="button" data-id="2mLu6PeIaLU" aria-label="Play Mission 3">
-                <img src="https://i.ytimg.com/vi/2mLu6PeIaLU/maxresdefault.jpg" alt="Mission 3 thumbnail" loading="lazy"
-                     onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/2mLu6PeIaLU/hqdefault.jpg'">
+                <img src="https://i.ytimg.com/vi/2mLu6PeIaLU/hqdefault.jpg" alt="Mission 3 thumbnail" loading="lazy">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1022,24 +1145,23 @@
   </section>
 
   <!-- ================= SHORTS ================= -->
-  <section id="shorts" class="section" style="padding-top:1rem">
+  <section id="shorts" class="section">
+    <div class="section-halftone-left" aria-hidden="true"></div>
     <div class="wrap">
       <div class="head reveal">
         <h2>Shorts</h2>
       </div>
 
       <div class="grid reveal">
-        <!-- Short 1 -->
+        <!-- Short 1: Troque o link ou ID em data-id pelo link do seu Short -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
-              <h3>Short 1</h3>
+              <h3>Rockstar marketing over Miami</h3>
             </div>
             <div class="player-short">
-              <!-- Substitua "SEU_ID_DO_SHORT_1" pelo ID do seu vídeo do YouTube -->
-              <button class="thumb" type="button" data-id="SEU_ID_DO_SHORT_1" aria-label="Play Short 1">
-                <img src="https://i.ytimg.com/vi/25MVgNW1imk?/maxresdefault.jpg" alt="Short 1 thumbnail" loading="lazy"
-                     onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/SEU_ID_DO_SHORT_1/hqdefault.jpg'">
+              <button class="thumb" type="button" data-id="https://youtube.com/shorts/_vyqTx5pIJU?feature=share" aria-label="Play Short 1">
+                <img src="" alt="Short 1 thumbnail" loading="lazy">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1047,17 +1169,15 @@
           </div>
         </article>
 
-        <!-- Short 2 -->
+        <!-- Short 2: Troque o link ou ID em data-id pelo link do seu Short -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
-              <h3>Short 2</h3>
+              <h3>Peek hole on GTA 6</h3>
             </div>
             <div class="player-short">
-              <!-- Substitua "SEU_ID_DO_SHORT_2" pelo ID do seu vídeo do YouTube -->
-              <button class="thumb" type="button" data-id="SEU_ID_DO_SHORT_2" aria-label="Play Short 2">
-                <img src="https://i.ytimg.com/vi/25MVgNW1imk?/maxresdefault.jpg" alt="Short 2 thumbnail" loading="lazy"
-                     onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/SEU_ID_DO_SHORT_2/hqdefault.jpg'">
+              <button class="thumb" type="button" data-id="https://youtube.com/shorts/25MVgNW1imk?feature=share" aria-label="Play Short 2">
+                <img src="" alt="Short 2 thumbnail" loading="lazy">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1065,17 +1185,15 @@
           </div>
         </article>
 
-        <!-- Short 3 -->
+        <!-- Short 3: Troque o link ou ID em data-id pelo link do seu Short -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
-              <h3>Short 3</h3>
+              <h3>GTA Burguer Shot IRL</h3>
             </div>
             <div class="player-short">
-              <!-- Substitua "SEU_ID_DO_SHORT_3" pelo ID do seu vídeo do YouTube -->
-              <button class="thumb" type="button" data-id="SEU_ID_DO_SHORT_3" aria-label="Play Short 3">
-                <img src="https://i.ytimg.com/vi/t2hdQiUSsTk?/maxresdefault.jpg" alt="Short 3 thumbnail" loading="lazy"
-                     onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/SEU_ID_DO_SHORT_3/hqdefault.jpg'">
+              <button class="thumb" type="button" data-id="https://youtube.com/shorts/t2hdQiUSsTk?feature=share" aria-label="Play Short 3">
+                <img src="" alt="Short 3 thumbnail" loading="lazy">
                 <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
                 <span class="brackets" aria-hidden="true"></span>
               </button>
@@ -1087,29 +1205,38 @@
   </section>
 
   <!-- ================= CLIENTS ================= -->
-  <section id="clients" class="section" style="padding-top:1rem">
+  <section id="clients" class="section">
+    <div class="section-halftone-right" aria-hidden="true"></div>
     <div class="wrap reveal">
       <div class="head">
         <h2>Clients</h2>
       </div>
       
       <div style="display: flex; justify-content: center; gap: 1.4rem; flex-wrap: wrap;">
-        <div class="about-box cut" style="width: 320px; background: linear-gradient(135deg, var(--slate), var(--night) 60%, var(--slate));">
-          <div class="about cut" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2.5rem 1.5rem; justify-content: center; min-height: 140px;">
-             
-             <!-- Script Oficial do Google/YouTube para exibir o perfil do cliente -->
-             <!-- Já está configurado com o Channel ID do canal do @GTAJailbreak -->
-             <script src="https://apis.google.com/js/platform.js"></script>
-             <div class="g-ytsubscribe" data-channelid="UCfL-CGVP2GzIrlisweFZ1Gg" data-layout="full" data-theme="dark" data-count="default"></div>
-             
+        <a class="client-card-link" href="https://www.youtube.com/@GTAJailbreak" target="_blank" rel="noopener noreferrer" aria-label="Visit GTAJailbreak YouTube Channel">
+          <div class="about-box cut">
+            <div class="client-card cut">
+              <div class="client-avatar-wrap">
+                <img class="client-avatar" id="clientAvatar" src="https://unavatar.io/youtube/GTAJailbreak" alt="GTAJailbreak Avatar">
+              </div>
+              <div class="client-info">
+                <h3 class="client-name">GTAJailbreak</h3>
+                <div class="client-handle">@GTAJailbreak</div>
+                <div class="client-subs">
+                  <span class="live-dot" aria-hidden="true"></span>
+                  <span id="liveSubCount">YouTube Creator</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
 
   <!-- ================= ABOUT ================= -->
-  <section id="about" class="section" style="padding-top:1rem">
+  <section id="about" class="section">
+    <div class="section-halftone-left" aria-hidden="true"></div>
     <div class="wrap reveal">
       <div class="about-box cut">
         <div class="about cut">
@@ -1133,7 +1260,7 @@
   </section>
 
   <!-- ================= CONTACT ================= -->
-  <section id="contact" class="section" style="padding-top:1rem">
+  <section id="contact" class="section">
     <div class="wrap reveal">
       <div class="contact-box cut">
         <div class="contact cut">
@@ -1180,6 +1307,52 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ---------- Live YouTube Subscriber Counter & Avatar (@GTAJailbreak) ---------- */
+    (function () {
+      const channelId = 'UCfL-CGVP2GzIrlisweFZ1Gg';
+      const subEl = document.getElementById('liveSubCount');
+      const avatarEl = document.getElementById('clientAvatar');
+
+      function formatSubs(count) {
+        const n = Number(count);
+        if (isNaN(n) || n <= 0) return null;
+        return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(n) + ' subscribers';
+      }
+
+      async function fetchLiveChannelData() {
+        try {
+          const res = await fetch('https://mixerno.space/api/youtube-channel-counter/user/' + channelId);
+          if (res.ok) {
+            const data = await res.json();
+            const subs = data?.counts?.find(c => c.value === 'subscribers')?.count;
+            const avatar = data?.user?.find(u => u.value === 'pfp')?.count;
+            if (subs && subEl) {
+              const formatted = formatSubs(subs);
+              if (formatted) subEl.textContent = formatted;
+            }
+            if (avatar && avatarEl) {
+              avatarEl.src = avatar;
+            }
+            return;
+          }
+        } catch (e) {}
+
+        try {
+          const res2 = await fetch('https://decapi.me/youtube/subcount/' + channelId);
+          if (res2.ok) {
+            const text = (await res2.text()).trim();
+            if (text && !text.toLowerCase().includes('error') && subEl) {
+              const cleanNum = text.replace(/[^0-9]/g, '');
+              subEl.textContent = formatSubs(cleanNum) || (text + ' subscribers');
+            }
+          }
+        } catch (e) {}
+      }
+
+      fetchLiveChannelData();
+      setInterval(fetchLiveChannelData, 60000);
+    })();
 
     /* ---------- Live Premiere Pro Timecode Counter ---------- */
     (function () {
@@ -1276,14 +1449,47 @@
       window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(build, 150); });
     })();
 
-    /* ---------- Video cards & Workstation: direct iframe on click ---------- */
+    /* ---------- Extrator Inteligente de ID + Correção de Thumbnails Cinzas ---------- */
     (function () {
+      function extractYouTubeId(input) {
+        if (!input) return '';
+        const str = input.trim();
+        if (str.includes('COLE_O_LINK') || str.includes('SEU_ID')) return '';
+        if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return str;
+        const match = str.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/|v\/))([a-zA-Z0-9_-]{11})/);
+        return match ? match[1] : str;
+      }
+
       document.querySelectorAll('.thumb').forEach(function (btn) {
+        const rawId = btn.dataset.id;
+        const cleanId = extractYouTubeId(rawId);
+        const img = btn.querySelector('img');
+
+        if (cleanId && img) {
+          img.src = 'https://i.ytimg.com/vi/' + cleanId + '/maxresdefault.jpg';
+
+          img.addEventListener('load', function () {
+            if (img.naturalWidth <= 120 && !img.src.includes('hqdefault.jpg')) {
+              img.src = 'https://i.ytimg.com/vi/' + cleanId + '/hqdefault.jpg';
+            }
+          });
+
+          img.addEventListener('error', function () {
+            if (!img.src.includes('hqdefault.jpg')) {
+              img.src = 'https://i.ytimg.com/vi/' + cleanId + '/hqdefault.jpg';
+            }
+          });
+        }
+
         btn.addEventListener('click', function () {
-          const id = btn.dataset.id;
+          const videoId = extractYouTubeId(btn.dataset.id);
+          if (!videoId) {
+            alert('Adicione o link ou ID do vídeo do YouTube no atributo data-id deste card!');
+            return;
+          }
           const player = btn.parentElement;
           const f = document.createElement('iframe');
-          f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+          f.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&playsinline=1';
           f.title = btn.getAttribute('aria-label').replace('Play', 'Video:');
           f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
           f.referrerPolicy = 'strict-origin-when-cross-origin';
