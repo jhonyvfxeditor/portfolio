@@ -319,124 +319,9 @@
       background: #000;
     }
 
-    .yt-stage-hud {
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      pointer-events: none;
-      background:
-        linear-gradient(180deg, rgba(44, 100, 168, 0.28) 0%, rgba(20, 38, 77, 0.35) 42%, rgba(8, 9, 11, 0.84) 100%),
-        repeating-linear-gradient(90deg, rgba(139, 146, 194, 0.03) 0px, rgba(139, 146, 194, 0.03) 1px, transparent 1px, transparent 60px),
-        repeating-linear-gradient(0deg, rgba(139, 146, 194, 0.03) 0px, rgba(139, 146, 194, 0.03) 1px, transparent 1px, transparent 60px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 20px 24px;
-    }
-
-    .yt-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .rec-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(8, 9, 11, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--slate);
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .rec-dot {
-      width: 8px;
-      height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--gold);
-      animation: pulseDot 1.2s infinite;
-    }
-
     @keyframes pulseDot {
       0%, 100% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.25); opacity: 0.65; }
-    }
-
-    .fps-badge {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #7cc0ff;
-      background: rgba(20, 38, 77, 0.82);
-      border: 1px solid var(--cape);
-      padding: 6px 12px;
-      border-radius: 4px;
-    }
-
-    .showreel-center {
-      text-align: center;
-      padding: 12px;
-    }
-
-    .unmute-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(20, 38, 77, 0.9);
-      backdrop-filter: blur(12px);
-      color: #FFF;
-      border: 2px solid var(--cape);
-      padding: 13px 24px;
-      border-radius: 4px;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      box-shadow: 0 0 30px rgba(44, 100, 168, 0.55);
-      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-    }
-
-    .yt-stage .thumb:hover .unmute-badge {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: #000;
-      transform: scale(1.05);
-    }
-
-    .yt-bottom-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--dusk);
-    }
-
-    .retention-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(20, 38, 77, 0.85);
-      border: 1px solid var(--cape);
-      padding: 6px 12px;
-      border-radius: 4px;
-      color: #FFF;
-    }
-
-    .retention-pill strong {
-      color: var(--gold);
     }
 
     /* Premiere Pro Multi-Track Timeline Fusion */
@@ -732,9 +617,9 @@
     .mission:hover .mission-bar, .mission:focus-within .mission-bar { background: var(--gold); border-color: var(--gold); color: #000; }
     .mission:hover .mission-bar::before, .mission:focus-within .mission-bar::before { background: var(--night); box-shadow: 0 0 0 3px rgba(20, 38, 77, .3); }
     .mission:hover .yt, .mission:focus-within .yt { color: #000; }
-    .mission:hover .thumb img { transform: scale(1.06); }
-    .mission:hover .play, .thumb:focus-visible .play { background: var(--gold); color: #000; transform: translate(-50%, -50%) scale(1.1); }
-    .mission:hover .brackets, .thumb:focus-visible .brackets { opacity: 1; inset: 10px; }
+    .mission:hover .thumb img, .yt-stage:hover .thumb img { transform: scale(1.06); }
+    .mission:hover .play, .yt-stage:hover .play, .thumb:focus-visible .play { background: var(--gold); color: #000; transform: translate(-50%, -50%) scale(1.1); }
+    .mission:hover .brackets, .yt-stage:hover .brackets, .thumb:focus-visible .brackets { opacity: 1; inset: 10px; }
 
     /* ---- Client Card (Live YouTube Channel) ---- */
     .client-card-link {
@@ -934,10 +819,6 @@
       .portrait { width: 120px; }
       .actions .btn { flex: 1 1 100%; }
 
-      .yt-stage-hud { padding: 12px; }
-      .rec-badge, .fps-badge, .retention-pill { font-size: 0.62rem; padding: 4px 8px; }
-      .unmute-badge { font-size: 0.7rem; padding: 10px 16px; }
-
       .section { padding: 3.2rem 0; }
       .about { padding: 2rem 1.3rem; }
       .tools { grid-template-columns: 1fr; }
@@ -984,28 +865,7 @@
         <div class="yt-stage player">
           <button class="thumb" type="button" data-id="E4XdUcD8rD4" aria-label="Play Showreel">
             <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Showreel thumbnail">
-
-            <div class="yt-stage-hud">
-              <div class="yt-top-bar">
-                <div class="rec-badge">
-                  <span class="rec-dot"></span>
-                  SHOWREEL_FINAL_V4.MP4 (16:9)
-                </div>
-                <div class="fps-badge">4K 60FPS // MASTER CUT</div>
-              </div>
-
-              <div class="showreel-center">
-                <span class="unmute-badge">▶ CLICK TO PLAY SHOWREEL</span>
-              </div>
-
-              <div class="yt-bottom-bar">
-                <div class="retention-pill">
-                  AVG RETENTION: <strong>74.8% (00:00 - 18:42)</strong>
-                </div>
-                <div>PREMIERE PRO + AFTER EFFECTS PIPELINE</div>
-              </div>
-            </div>
-
+            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
             <span class="brackets" aria-hidden="true"></span>
           </button>
         </div>
