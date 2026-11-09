@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Jhony VFX | Video Editor</title>
   <meta name="description" content="Jhony VFX, video editor.">
   <meta name="theme-color" content="#14264d">
@@ -40,58 +40,18 @@
 
     body {
       margin: 0;
-      padding-left: env(safe-area-inset-left, 0px);
-      padding-right: env(safe-area-inset-right, 0px);
       font-family: var(--font-body);
       font-size: 1.05rem;
       line-height: 1.55;
       color: var(--text);
       background-color: var(--black);
+      overflow-x: hidden;
     }
 
-    /* ================= Touch & Input Optimizations ================= */
-    a, button, input, select, textarea, [role="button"] {
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-
-    button, .btn, .nl, .nav-cta, .thumb, .yt, .foot-nav a, .track-label, .clip {
-      -webkit-user-select: none;
-      user-select: none;
-    }
-
-    /* Garante fonte mínima de 16px em inputs para evitar auto-zoom no iOS */
-    input, textarea, select {
-      font-family: inherit;
-      font-size: max(16px, 1rem);
-      color: var(--text);
-    }
-
-    /* Área de toque mínima de 44x44px via pseudo-elemento sem afetar o layout visual */
-    .nl, .nav-cta, .yt, .foot-nav a {
-      position: relative;
-    }
-    .nl::after,
-    .nav-cta::after,
-    .yt::after,
-    .foot-nav a::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      min-width: 44px;
-      min-height: 44px;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Camada de fundo fixa acelerada por GPU (usa 100dvh para telas cheias dinâmicas) */
+    /* Camada de fundo fixa acelerada por GPU (evita repaints durante o scroll) */
     .bg-canvas {
       position: fixed;
       inset: 0;
-      width: 100%;
-      min-height: 100dvh;
       z-index: 0;
       pointer-events: none;
       transform: translateZ(0);
@@ -108,7 +68,7 @@
 
     .wrap { width: min(1180px, 100% - 2rem); margin-inline: auto; position: relative; z-index: 2; }
 
-    section[id] { scroll-margin-top: calc(5.5rem + env(safe-area-inset-top, 0px)); }
+    section[id] { scroll-margin-top: 5.5rem; }
 
     .cut {
       clip-path: polygon(
@@ -122,14 +82,13 @@
     /* ================= Floating pill nav ================= */
     .nav {
       position: fixed;
-      top: calc(14px + env(safe-area-inset-top, 0px));
+      top: 14px;
       left: 50%;
       transform: translate3d(-50%, 0, 0);
       z-index: 50;
       display: flex;
       align-items: center;
       gap: .4rem;
-      max-width: calc(100% - 1rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
       padding: .5rem;
       border-radius: 999px;
       background: rgba(30, 32, 38, .78);
@@ -139,50 +98,51 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
       white-space: nowrap;
       will-change: transform;
+      max-width: calc(100vw - 1rem);
+      overflow-x: auto;
+      scrollbar-width: none;
     }
+    .nav::-webkit-scrollbar { display: none; }
 
     .nl {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: .55rem 1rem;
+      padding: .55rem .95rem;
       border-radius: 999px;
       font-weight: 600;
-      font-size: .95rem;
+      font-size: .92rem;
       color: var(--text);
       text-decoration: none;
       background: rgba(255, 255, 255, .04);
       border: 1px solid rgba(255, 255, 255, .06);
-      transition: color .2s ease, background .2s ease, border-color .2s ease, transform .15s ease;
+      transition: color .2s ease, background .2s ease, border-color .2s ease;
     }
+    .nl:hover { color: var(--gold); background: rgba(255, 198, 26, .12); }
     .nl.active { color: var(--gold); border-color: rgba(255, 198, 26, .5); }
-    .nl:active { color: var(--gold); background: rgba(255, 198, 26, .18); transform: scale(0.96); }
 
     .nav-cta {
       display: inline-flex;
       align-items: center;
       gap: .35rem;
       margin-left: .2rem;
-      padding: .7rem 1.2rem;
+      padding: .7rem 1.15rem;
       border-radius: 999px;
       font-weight: 700;
       color: #000;
       text-decoration: none;
       background: var(--gold);
-      transition: background .2s ease, transform .15s ease;
+      transition: background .2s ease, transform .2s ease;
     }
     .nav-cta svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; transition: transform .2s ease; }
-    .nav-cta:active { background: #fff; transform: scale(0.96); }
+    .nav-cta:hover { background: #fff; }
+    .nav-cta:hover svg { transform: translateX(3px); }
 
     a:focus-visible, button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
 
-    /* ================= Hero (100svh + Safe Area) ================= */
+    /* ================= Hero ================= */
     .hero {
       position: relative;
       z-index: 1;
       overflow: hidden;
-      min-height: 100svh;
-      padding: calc(8.5rem + env(safe-area-inset-top, 0px)) 0 10rem;
+      padding: 8.5rem 0 10rem;
       text-align: center;
       background:
         radial-gradient(900px 480px at 50% -5%, rgba(44, 100, 168, .55), transparent 70%),
@@ -307,7 +267,6 @@
       align-items: center;
       justify-content: center;
       gap: .6rem;
-      min-height: 44px;
       padding: .8rem 1.4rem;
       border: 0;
       cursor: pointer;
@@ -320,15 +279,16 @@
       transition: transform .18s ease, background .18s ease, color .18s ease;
     }
     .btn svg { width: 1.2em; height: 1.2em; flex: none; fill: currentColor; }
-    .btn:active { transform: translateY(0) scale(0.97); }
+    .btn:hover { transform: translateY(-3px); }
+    .btn:active { transform: translateY(0); }
 
-    .btn-gold:active { background: #fff; }
+    .btn-gold:hover { background: #fff; }
     .btn-ghost { background: rgba(255, 255, 255, .1); color: var(--text); }
-    .btn-ghost:active { background: var(--gold); color: #000; }
+    .btn-ghost:hover { background: var(--gold); color: #000; }
     .btn-x { background: var(--cape); color: #fff; }
-    .btn-x:active { background: var(--gold); color: #000; }
+    .btn-x:hover { background: var(--gold); color: #000; }
     .btn-discord { background: var(--slate); color: #fff; }
-    .btn-discord:active { background: var(--gold); color: #000; }
+    .btn-discord:hover { background: var(--gold); color: #000; }
 
     /* ==========================================================================
        WORKSTATION RIG (SILHUETA AZUL DO SITE + PREMIERE PRO TIMELINE)
@@ -345,6 +305,10 @@
       position: relative;
       text-align: left;
       transition: border-color 0.25s ease;
+    }
+
+    .workstation-rig:hover {
+      border-color: var(--gold);
     }
 
     .yt-stage {
@@ -378,7 +342,6 @@
       padding: 12px 16px 16px;
       position: relative;
       overflow: hidden;
-      -webkit-user-select: none;
       user-select: none;
     }
 
@@ -539,7 +502,6 @@
     .section {
       position: relative;
       z-index: 1;
-      overflow: hidden;
       padding: 4.5rem 0;
       background:
         radial-gradient(65% 50% at 50% 50%, rgba(44, 100, 168, .12), transparent 100%);
@@ -564,6 +526,13 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.4rem;
+    }
+
+    /* Layout 2 Colunas (Exclusivo para a seção Long-form) */
+    .grid-2col {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 860px; /* Limita a largura total para os vídeos não ficarem esticados */
+      margin-inline: auto;
     }
 
     .mission {
@@ -595,31 +564,18 @@
     }
     .mission-bar h3 { margin: 0; flex: 1; font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; letter-spacing: .02em; }
     .yt {
-      display: inline-flex;
-      align-items: center;
       font-size: .82rem;
       font-weight: 700;
       color: var(--dusk);
       text-decoration: none;
-      transition: color .2s ease, opacity .15s ease;
+      transition: color .2s ease;
     }
-    .yt:active { color: var(--gold); opacity: .75; }
+    .yt:hover { text-decoration: underline; }
 
     .player { position: relative; aspect-ratio: 16 / 9; background: var(--black); overflow: hidden; }
     .player-short { position: relative; aspect-ratio: 9 / 16; background: var(--black); overflow: hidden; }
 
-    .thumb {
-      all: unset;
-      box-sizing: border-box;
-      position: absolute;
-      inset: 0;
-      cursor: pointer;
-      display: block;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-      -webkit-user-select: none;
-      user-select: none;
-    }
+    .thumb { all: unset; box-sizing: border-box; position: absolute; inset: 0; cursor: pointer; display: block; }
     .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
     .thumb::after {
       content: "";
@@ -667,37 +623,33 @@
 
     .player iframe, .player-short iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-    /* Focus-within & Active states (funcionam em teclado e toque) */
-    .mission:focus-within {
+    .mission:hover, .mission:focus-within {
       transform: translate3d(0, -6px, 0);
       background: var(--gold);
     }
-    .mission:focus-within .mission-bar { background: var(--gold); border-color: var(--gold); color: #000; }
-    .mission:focus-within .mission-bar::before { background: var(--night); box-shadow: 0 0 0 3px rgba(20, 38, 77, .3); }
-    .mission:focus-within .yt { color: #000; }
-    .thumb:focus-visible .play,
-    .thumb:active .play { background: var(--gold); color: #000; transform: translate3d(-50%, -50%, 0) scale(1.06); }
-    .thumb:focus-visible .brackets,
-    .thumb:active .brackets { opacity: 1; transform: scale(1); }
+    .mission:hover .mission-bar, .mission:focus-within .mission-bar { background: var(--gold); border-color: var(--gold); color: #000; }
+    .mission:hover .mission-bar::before, .mission:focus-within .mission-bar::before { background: var(--night); box-shadow: 0 0 0 3px rgba(20, 38, 77, .3); }
+    .mission:hover .yt, .mission:focus-within .yt { color: #000; }
+    .mission:hover .thumb img, .yt-stage:hover .thumb img { transform: scale(1.05); }
+    .mission:hover .play, .yt-stage:hover .play, .thumb:focus-visible .play { background: var(--gold); color: #000; transform: translate3d(-50%, -50%, 0) scale(1.1); }
+    .mission:hover .brackets, .yt-stage:hover .brackets, .thumb:focus-visible .brackets { opacity: 1; transform: scale(1); }
 
-    /* ---- Client Card (Live YouTube Channel - Sem risco de overflow horizontal) ---- */
+    /* ---- Client Card (Live YouTube Channel) ---- */
     .client-card-link {
       text-decoration: none;
       color: var(--text);
       display: inline-block;
-      max-width: 100%;
       transition: transform .22s ease;
     }
-    .client-card-link:active {
-      transform: scale(0.98);
+    .client-card-link:hover {
+      transform: translate3d(0, -5px, 0);
     }
     .client-card {
       display: flex;
       align-items: center;
       gap: 1.25rem;
       padding: 1.5rem 2rem;
-      width: 100%;
-      min-width: min(320px, 100%);
+      min-width: 320px;
       background:
         radial-gradient(300px 180px at 100% 0%, rgba(44, 100, 168, .35), transparent 70%),
         var(--panel);
@@ -722,7 +674,6 @@
     }
     .client-info {
       text-align: left;
-      min-width: 0;
     }
     .client-name {
       margin: 0;
@@ -766,7 +717,6 @@
     /* ---- About ---- */
     .about-box {
       padding: 3px;
-      max-width: 100%;
       background: linear-gradient(135deg, var(--cape), var(--gold) 50%, var(--slate));
       --cut: 18px;
       box-shadow: 0 16px 40px rgba(0, 0, 0, .7);
@@ -793,7 +743,7 @@
       background: rgba(255, 255, 255, .04);
       transition: background .2s ease, transform .2s ease;
     }
-    .tool:active { background: rgba(255, 198, 26, .12); }
+    .tool:hover { background: rgba(255, 198, 26, .1); transform: translateX(4px); }
     .tool b {
       display: grid;
       place-items: center;
@@ -832,27 +782,20 @@
     .contact p { margin: .8rem auto 0; max-width: 34ch; color: #c9cde0; font-size: 1.15rem; }
     .contact .actions { margin-top: 1.6rem; }
 
-    /* ---- Footer (com Safe Area inferior para indicador do iPhone) ---- */
-    footer {
-      position: relative;
-      z-index: 1;
-      padding: 2rem 0 calc(2.4rem + env(safe-area-inset-bottom, 0px));
-      text-align: center;
-      background: transparent;
-    }
+    /* ---- Footer ---- */
+    footer { position: relative; z-index: 1; padding: 2rem 0 2.4rem; text-align: center; background: transparent; }
     .foot-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1rem; padding: 0; margin: 1.6rem 0 0; list-style: none; }
     .foot-nav li { display: flex; align-items: center; gap: 1rem; }
     .foot-nav li + li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
-    .foot-nav a { color: var(--text); text-decoration: none; font-weight: 500; transition: color .2s ease; }
-    .foot-nav a:active { color: var(--gold); }
+    .foot-nav a { color: var(--text); text-decoration: none; font-weight: 500; }
+    .foot-nav a:hover { color: var(--gold); }
     .copy { margin-top: 1.2rem; font-size: .9rem; color: var(--dusk); display: flex; align-items: center; justify-content: center; gap: .6rem; }
 
-    /* ---- Toast (com Safe Area inferior) ---- */
+    /* ---- Toast ---- */
     .toast {
       --cut: 10px;
       position: fixed;
-      left: 50%;
-      bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+      left: 50%; bottom: 1.5rem;
       transform: translate3d(-50%, 140%, 0);
       padding: .7rem 1.2rem;
       font-family: var(--font-display);
@@ -873,55 +816,22 @@
     .js .reveal { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity .5s ease, transform .5s ease; }
     .js .reveal.in { opacity: 1; transform: none; }
 
-    /* ================= Hover Isolado (Apenas Dispositivos com Mouse/Ponteiro Fino) ================= */
-    @media (hover: hover) and (pointer: fine) {
-      .nl:hover { color: var(--gold); background: rgba(255, 198, 26, .12); }
-      .nav-cta:hover { background: #fff; }
-      .nav-cta:hover svg { transform: translateX(3px); }
-
-      .btn:hover { transform: translateY(-3px); }
-      .btn-gold:hover { background: #fff; }
-      .btn-ghost:hover { background: var(--gold); color: #000; }
-      .btn-x:hover { background: var(--gold); color: #000; }
-      .btn-discord:hover { background: var(--gold); color: #000; }
-
-      .workstation-rig:hover { border-color: var(--gold); }
-
-      .yt:hover { text-decoration: underline; }
-
-      .mission:hover {
-        transform: translate3d(0, -6px, 0);
-        background: var(--gold);
-      }
-      .mission:hover .mission-bar { background: var(--gold); border-color: var(--gold); color: #000; }
-      .mission:hover .mission-bar::before { background: var(--night); box-shadow: 0 0 0 3px rgba(20, 38, 77, .3); }
-      .mission:hover .yt { color: #000; }
-      .mission:hover .thumb img, .yt-stage:hover .thumb img { transform: scale(1.05); }
-      .mission:hover .play, .yt-stage:hover .play { background: var(--gold); color: #000; transform: translate3d(-50%, -50%, 0) scale(1.1); }
-      .mission:hover .brackets, .yt-stage:hover .brackets { opacity: 1; transform: scale(1); }
-
-      .client-card-link:hover { transform: translate3d(0, -5px, 0); }
-      .tool:hover { background: rgba(255, 198, 26, .1); transform: translateX(4px); }
-      .foot-nav a:hover { color: var(--gold); }
-    }
-
     /* ================= Responsive ================= */
     @media (max-width: 1000px) {
-      .grid { grid-template-columns: 1fr; max-width: 640px; margin-inline: auto; }
+      .grid, .grid-2col { grid-template-columns: 1fr; max-width: 640px; margin-inline: auto; }
     }
 
     @media (max-width: 640px) {
       .nav { gap: .25rem; padding: .4rem; }
       .nl-home { display: none; }
-      .nl { padding: .5rem .7rem; font-size: .82rem; }
-      .nav-cta { padding: .55rem .85rem; font-size: .85rem; }
+      .nl { padding: .45rem .68rem; font-size: .8rem; }
+      .nav-cta { padding: .55rem .85rem; font-size: .82rem; }
 
-      .hero { padding: calc(7rem + env(safe-area-inset-top, 0px)) 0 8rem; }
+      .hero { padding: 7rem 0 8rem; }
       .portrait { width: 120px; }
       .actions .btn { flex: 1 1 100%; }
 
       .section { padding: 3.2rem 0; }
-      .client-card { padding: 1.25rem 1.25rem; }
       .about { padding: 2rem 1.3rem; }
       .tools { grid-template-columns: 1fr; }
       h1 { text-shadow: 2px 2px 0 var(--cape), 4px 4px 0 #000; }
@@ -1057,8 +967,10 @@
         <h2>Long-form</h2>
       </div>
 
-      <div class="grid reveal">
+      <!-- Alterado para classe grid-2col para travar em 2 colunas e não esticar -->
+      <div class="grid grid-2col reveal">
 
+        <!-- Vídeo 1 -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
@@ -1075,6 +987,7 @@
           </div>
         </article>
 
+        <!-- Vídeo 2 -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
@@ -1091,6 +1004,7 @@
           </div>
         </article>
 
+        <!-- Vídeo 3 -->
         <article class="mission cut">
           <div class="mission-inner cut">
             <div class="mission-bar">
@@ -1107,10 +1021,39 @@
           </div>
         </article>
 
+        <!-- Vídeo 4 (Seu vídeo novo!) -->
+        <article class="mission cut">
+          <div class="mission-inner cut">
+            <div class="mission-bar">
+              <h3>Re-edit TypicalGamer Live Stream Cut</h3>
+              <a class="yt" href="https://youtu.be/FyPJMcFW1PQ" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
+            </div>
+            <div class="player">
+              <button class="thumb" type="button" data-id="FyPJMcFW1PQ" aria-label="Play Mission 4">
+                <img src="" alt="Mission 4 thumbnail" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="brackets" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 
+        ================================================================================
+        COMO ADICIONAR UM NOVO VÍDEO LONG-FORM:
+        1. Copie um bloco inteiro começando de <article class="mission cut"> até </article>
+        2. Cole logo aqui embaixo dessa linha.
+        3. Mude o título dentro do <h3>Seu Título Aqui</h3>
+        4. Mude o link href="..." na tag <a class="yt">
+        5. Coloque a URL do YouTube dentro de data-id="..." na tag <button>
+        Pronto, o site vai puxar o vídeo e a capa automaticamente!
+        ================================================================================
+        -->
+
       </div>
     </div>
   </section>
-  
+
   <!-- ================= SHORTS ================= -->
   <section id="shorts" class="section">
     <div class="section-halftone-left" aria-hidden="true"></div>
@@ -1167,6 +1110,18 @@
             </div>
           </div>
         </article>
+
+        <!-- 
+        ================================================================================
+        COMO ADICIONAR UM NOVO SHORT:
+        1. Copie o bloco de código de <article class="mission cut"> até </article> (dos Shorts).
+        2. Cole logo aqui embaixo dessa linha.
+        3. Altere o título em <h3>
+        4. Coloque a URL do Short dentro de data-id="..." na tag <button>
+        Pronto, a thumbnail de celular carregará sozinha!
+        ================================================================================
+        -->
+
       </div>
     </div>
   </section>
@@ -1208,7 +1163,7 @@
       <div class="about-box cut">
         <div class="about cut">
           <h2>About Me</h2>
-          <h3>Video Editor for GTA Creators</h3>
+          <h3>Video Editor for Gaming Creators</h3>
           <p>GTA is by far my favorite franchise to edit. I can adapt to whatever format you need. I reply fast and I'll keep you in the loop step-by-step as I work. The only time I'll take a while to get back to you is if I'm asleep lol.</p>
 
           <div class="tools">
@@ -1234,15 +1189,6 @@
           <div class="halftone" aria-hidden="true"></div>
           <h2>Contact</h2>
           <p>Send me a message and let's work together!</p>
-
-          <!--
-            Caso adicione campos de formulário no futuro, a fonte mínima de 16px já está configurada no CSS
-            e você pode usar os teclados nativos corretos desta forma:
-            <input type="email" name="email" autocomplete="email" placeholder="Your email">
-            <input type="tel" name="phone" autocomplete="tel" placeholder="Your phone">
-            <input type="text" inputmode="decimal" placeholder="Budget / Value">
-            <input type="text" inputmode="numeric" pattern="[0-9]*" placeholder="Verification code">
-          -->
 
           <div class="actions">
             <a class="btn btn-gold cut" href="mailto:jonathan.kusniik@gmail.com">
