@@ -1,297 +1,1503 @@
-<div class="wrap hero-content">
-  <div class="portrait cut"><img src="Profile.jpg" alt="Jhony VFX" decoding="async"></div>
-  <h1>Jhony VFX | Video Editor</h1>
-  <div class="actions">
-    <a class="btn btn-gold cut" href="#longform">View Portfolio
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+site antigo
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jhony VFX | Video Editor</title>
+  <meta name="description" content="Jhony VFX, video editor.">
+  <meta name="theme-color" content="#14264d">
+  <meta property="og:title" content="Jhony VFX | Video Editor">
+  <meta property="og:image" content="Profile.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Changa+One&family=JetBrains+Mono:wght@400;600;700;800&family=Paytone+One&family=Russo+One&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <style>
+    :root {
+      --charcoal-top: #2c2d31;
+      --charcoal: #17181b;
+      --black: #08090b;
+      --panel: #1d1f25;
+      --gold: #ffc61a;
+      --cape: #2c64a8;
+      --night: #14264d;
+      --night-2: #1b2f63;
+      --slate: #3d4b6e;
+      --dusk: #8b92c2;
+      --text: #eef0f6;
+
+      --cut: 14px;
+      --font-display: "Russo One", sans-serif;
+      --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--text);
+      background-color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* Camada de fundo fixa acelerada por GPU (evita repaints durante o scroll) */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      transform: translateZ(0);
+      background-color: var(--black);
+      background-image:
+        radial-gradient(900px 600px at 10% 25%, rgba(44, 100, 168, 0.14), transparent 70%),
+        radial-gradient(900px 600px at 90% 55%, rgba(27, 47, 99, 0.18), transparent 70%),
+        radial-gradient(800px 500px at 50% 85%, rgba(255, 198, 26, 0.05), transparent 70%),
+        repeating-linear-gradient(90deg, rgba(139, 146, 194, 0.02) 0px, rgba(139, 146, 194, 0.02) 1px, transparent 1px, transparent 64px),
+        repeating-linear-gradient(0deg, rgba(139, 146, 194, 0.02) 0px, rgba(139, 146, 194, 0.02) 1px, transparent 1px, transparent 64px);
+    }
+
+    img { max-width: 100%; }
+
+    .wrap { width: min(1180px, 100% - 2rem); margin-inline: auto; position: relative; z-index: 2; }
+
+    section[id] { scroll-margin-top: 5.5rem; }
+
+    .cut {
+      clip-path: polygon(
+        var(--cut) 0, 100% 0,
+        100% calc(100% - var(--cut)),
+        calc(100% - var(--cut)) 100%,
+        0 100%, 0 var(--cut)
+      );
+    }
+
+    /* ================= Floating pill nav ================= */
+    .nav {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translate3d(-50%, 0, 0);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .5rem;
+      border-radius: 999px;
+      background: rgba(30, 32, 38, .78);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(139, 146, 194, .22);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .45);
+      white-space: nowrap;
+      will-change: transform;
+      max-width: calc(100vw - 1rem);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+
+    .nl {
+      padding: .55rem .95rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: .92rem;
+      color: var(--text);
+      text-decoration: none;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .06);
+      transition: color .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .nl:hover { color: var(--gold); background: rgba(255, 198, 26, .12); }
+    .nl.active { color: var(--gold); border-color: rgba(255, 198, 26, .5); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      margin-left: .2rem;
+      padding: .7rem 1.15rem;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #000;
+      text-decoration: none;
+      background: var(--gold);
+      transition: background .2s ease, transform .2s ease;
+    }
+    .nav-cta svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; transition: transform .2s ease; }
+    .nav-cta:hover { background: #fff; }
+    .nav-cta:hover svg { transform: translateX(3px); }
+
+    a:focus-visible, button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+    /* ================= Hero ================= */
+    .hero {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      padding: 8.5rem 0 10rem;
+      text-align: center;
+      background:
+        radial-gradient(900px 480px at 50% -5%, rgba(44, 100, 168, .55), transparent 70%),
+        radial-gradient(600px 360px at 92% 25%, rgba(27, 47, 99, .9), transparent 70%),
+        linear-gradient(180deg, #1a2a55 0%, var(--charcoal) 68%, var(--black) 100%);
+    }
+
+    .stars { position: absolute; inset: 0; pointer-events: none; }
+    .stars i {
+      position: absolute;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      background: #cfd4ff;
+      opacity: .5;
+      animation: twinkle 4s ease-in-out infinite;
+    }
+    .hero.paused .stars i,
+    .hero.paused .playhead-mover,
+    .hero.paused .rec-dot {
+      animation-play-state: paused !important;
+    }
+    @keyframes twinkle { 0%, 100% { opacity: .15; } 50% { opacity: .85; } }
+
+    /* Comic halftone */
+    .halftone {
+      position: absolute;
+      left: 0; bottom: 110px;
+      width: 40%; height: 55%;
+      background-image: radial-gradient(circle, rgba(255, 198, 26, .30) 1.6px, transparent 2.3px);
+      background-size: 16px 16px;
+      -webkit-mask-image: linear-gradient(45deg, #000 0%, transparent 70%);
+      mask-image: linear-gradient(45deg, #000 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Halftones laterais leves (sem mix-blend-mode pesado) */
+    .section-halftone-right,
+    .section-halftone-left {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 32%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .section-halftone-right {
+      right: 0;
+      background-image: radial-gradient(circle, rgba(44, 100, 168, .2) 1.6px, transparent 2.4px);
+      background-size: 18px 18px;
+      -webkit-mask-image: radial-gradient(ellipse 90% 45% at 100% 50%, #000 0%, transparent 75%);
+      mask-image: radial-gradient(ellipse 90% 45% at 100% 50%, #000 0%, transparent 75%);
+    }
+
+    .section-halftone-left {
+      left: 0;
+      background-image: radial-gradient(circle, rgba(255, 198, 26, .12) 1.5px, transparent 2.3px);
+      background-size: 16px 16px;
+      -webkit-mask-image: radial-gradient(ellipse 90% 45% at 0% 50%, #000 0%, transparent 75%);
+      mask-image: radial-gradient(ellipse 90% 45% at 0% 50%, #000 0%, transparent 75%);
+    }
+
+    .skyline {
+      position: absolute;
+      left: 0; bottom: -1px;
+      width: 100%;
+      height: 150px;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    .portrait {
+      --cut: 18px;
+      display: inline-block;
+      width: 150px;
+      aspect-ratio: 1;
+      padding: 3px;
+      background: var(--gold);
+      box-shadow: 0 0 26px rgba(255, 198, 26, .28);
+    }
+    .portrait img {
+      display: block;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      background: var(--night);
+      clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+    }
+
+    h1 {
+      margin: 1.2rem 0 0;
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2.3rem, 6vw, 4.4rem);
+      line-height: 1.02;
+      letter-spacing: .01em;
+      color: var(--gold);
+      -webkit-text-stroke: 1px #000;
+      paint-order: stroke fill;
+      text-shadow: 3px 3px 0 var(--cape), 6px 6px 0 #000;
+      animation: stamp .55s cubic-bezier(.2, 1.4, .4, 1) both;
+    }
+    @keyframes stamp {
+      from { opacity: 0; transform: scale(1.12) rotate(-1.5deg); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .subtitle {
+      margin: 1rem auto 0;
+      max-width: 34ch;
+      font-size: clamp(1.1rem, 2.3vw, 1.4rem);
+      font-weight: 500;
+      color: var(--dusk);
+    }
+
+    .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .8rem; margin-top: 1.8rem; }
+
+    /* Angled buttons */
+    .btn {
+      --cut: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      padding: .8rem 1.4rem;
+      border: 0;
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: .02em;
+      text-decoration: none;
+      color: #000;
+      background: var(--gold);
+      transition: transform .18s ease, background .18s ease, color .18s ease;
+    }
+    .btn svg { width: 1.2em; height: 1.2em; flex: none; fill: currentColor; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-gold:hover { background: #fff; }
+    .btn-ghost { background: rgba(255, 255, 255, .1); color: var(--text); }
+    .btn-ghost:hover { background: var(--gold); color: #000; }
+    .btn-x { background: var(--cape); color: #fff; }
+    .btn-x:hover { background: var(--gold); color: #000; }
+    .btn-discord { background: var(--slate); color: #fff; }
+    .btn-discord:hover { background: var(--gold); color: #000; }
+
+    /* ==========================================================================
+       WORKSTATION RIG (SILHUETA AZUL DO SITE + PREMIERE PRO TIMELINE)
+       ========================================================================== */
+    .workstation-rig {
+      max-width: 1020px;
+      margin: 3rem auto 0;
+      width: 100%;
+      border-radius: 8px;
+      background: var(--panel);
+      border: 2px solid var(--cape);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(44, 100, 168, 0.35);
+      overflow: hidden;
+      position: relative;
+      text-align: left;
+      transition: border-color 0.25s ease;
+    }
+
+    .workstation-rig:hover {
+      border-color: var(--gold);
+    }
+
+    .yt-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: radial-gradient(circle at 70% 30%, var(--night-2) 0%, var(--night) 48%, var(--black) 100%);
+      overflow: hidden;
+    }
+
+    .yt-stage video,
+    .yt-stage iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      z-index: 5;
+      background: #000;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.25); opacity: 0.65; }
+    }
+
+    /* Premiere Pro Multi-Track Timeline Fusion */
+    .premiere-timeline {
+      background: #080b12;
+      border-top: 2px solid var(--slate);
+      padding: 12px 16px 16px;
+      position: relative;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--dusk);
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(61, 75, 110, 0.4);
+    }
+
+    .timecode-active {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .timeline-tracks {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      position: relative;
+    }
+
+    .track-row {
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 8px;
+      align-items: center;
+      height: 22px;
+    }
+
+    .track-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--dusk);
+      background: var(--night);
+      border: 1px solid var(--slate);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+    }
+
+    .track-clips {
+      display: flex;
+      gap: 2px;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .clip {
+      height: 100%;
+      border-radius: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-left: 2px solid rgba(255, 255, 255, 0.45);
+    }
+
+    .clip-vfx {
+      background: rgba(139, 146, 194, 0.22);
+      border-color: var(--dusk);
+      color: #dfe3ff;
+    }
+
+    .clip-cam {
+      background: rgba(44, 100, 168, 0.35);
+      border-color: var(--cape);
+      color: #b8dcff;
+    }
+
+    .clip-vod {
+      background: rgba(27, 47, 99, 0.65);
+      border-color: #4b83d1;
+      color: #d0e4ff;
+    }
+
+    .clip-sfx {
+      background: rgba(255, 198, 26, 0.20);
+      border-color: var(--gold);
+      color: #ffe699;
+    }
+
+    /* Agulha acelerada via GPU usando transform: translateX em vez de left */
+    .playhead-mover {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      will-change: transform;
+      animation: scrubTimeline 7s ease-in-out infinite alternate;
+    }
+
+    .playhead-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 2px;
+      background: var(--gold);
+      box-shadow: 0 0 10px var(--gold);
+    }
+
+    .playhead-cap {
+      position: absolute;
+      top: -4px;
+      left: -6px;
+      width: 14px;
+      height: 12px;
+      background: var(--gold);
+      clip-path: polygon(0 0, 100% 0, 100% 55%, 50% 100%, 0 55%);
+    }
+
+    .playhead-spark {
+      position: absolute;
+      top: 50%;
+      left: -4px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #FFF;
+      box-shadow: 0 0 12px #FFF;
+    }
+
+    @keyframes scrubTimeline {
+      0% { transform: translate3d(18%, 0, 0); }
+      45% { transform: translate3d(52%, 0, 0); }
+      70% { transform: translate3d(48%, 0, 0); }
+      100% { transform: translate3d(82%, 0, 0); }
+    }
+
+    /* Hazard-stripe divider */
+    .hazard {
+      position: relative;
+      z-index: 1;
+      height: 6px;
+      background: repeating-linear-gradient(-45deg, var(--gold) 0 14px, transparent 14px 28px);
+      opacity: .28;
+      -webkit-mask-image: linear-gradient(90deg, transparent 5%, #000 35%, #000 65%, transparent 95%);
+      mask-image: linear-gradient(90deg, transparent 5%, #000 35%, #000 65%, transparent 95%);
+    }
+
+    /* ================= Sections (Com Blend Suave e Sem Peso de GPU) ================= */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 4.5rem 0;
+      background:
+        radial-gradient(65% 50% at 50% 50%, rgba(44, 100, 168, .12), transparent 100%);
+    }
+
+    .head { text-align: center; margin-bottom: 2.6rem; }
+
+    h2 {
+      margin: 1rem 0 0;
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2rem, 4.6vw, 3.2rem);
+      line-height: 1.05;
+      color: #fff;
+      text-shadow: 3px 3px 0 var(--cape), 5px 5px 0 #000;
+    }
+
+    .head p { margin: .7rem auto 0; max-width: 46ch; color: var(--dusk); }
+
+    /* ---- Mission cards ---- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+    }
+
+    /* Layout 2 Colunas (Exclusivo para a seção Long-form) */
+    .grid-2col {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 860px; /* Limita a largura total para os vídeos não ficarem esticados */
+      margin-inline: auto;
+    }
+
+    .mission {
+      padding: 3px;
+      background: var(--slate);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .6);
+      transition: transform .22s ease, background .22s ease;
+      will-change: transform;
+    }
+    .mission-inner { --cut: 12px; display: flex; flex-direction: column; height: 100%; background: var(--panel); }
+
+    .mission-bar {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .6rem .9rem;
+      background: var(--night);
+      border-bottom: 3px solid var(--slate);
+      transition: background .22s ease, border-color .22s ease, color .22s ease;
+    }
+    .mission-bar::before {
+      content: "";
+      width: .8rem; height: .8rem;
+      flex: none;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 0 3px rgba(255, 198, 26, .3);
+      transition: background .22s ease, box-shadow .22s ease;
+    }
+    .mission-bar h3 { margin: 0; flex: 1; font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; letter-spacing: .02em; }
+    .yt {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--dusk);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+    .yt:hover { text-decoration: underline; }
+
+    .player { position: relative; aspect-ratio: 16 / 9; background: var(--black); overflow: hidden; }
+    .player-short { position: relative; aspect-ratio: 9 / 16; background: var(--black); overflow: hidden; }
+
+    .thumb { all: unset; box-sizing: border-box; position: absolute; inset: 0; cursor: pointer; display: block; }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+    .thumb::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(8, 9, 11, .55));
+    }
+
+    .play {
+      position: absolute;
+      left: 50%; top: 50%;
+      z-index: 2;
+      width: 68px; height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: var(--gold);
+      background: rgba(8, 9, 11, .86);
+      border: 1px solid rgba(255, 198, 26, .45);
+      transform: translate3d(-50%, -50%, 0);
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+    .play svg { width: 26px; height: 26px; fill: currentColor; }
+
+    /* GTA-style focus brackets */
+    .brackets {
+      --c: var(--gold);
+      position: absolute;
+      inset: 16px;
+      z-index: 2;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease, transform .22s ease;
+      transform: scale(0.96);
+      background:
+        linear-gradient(var(--c), var(--c)) 0 0 / 24px 3px,
+        linear-gradient(var(--c), var(--c)) 0 0 / 3px 24px,
+        linear-gradient(var(--c), var(--c)) 100% 0 / 24px 3px,
+        linear-gradient(var(--c), var(--c)) 100% 0 / 3px 24px,
+        linear-gradient(var(--c), var(--c)) 0 100% / 24px 3px,
+        linear-gradient(var(--c), var(--c)) 0 100% / 3px 24px,
+        linear-gradient(var(--c), var(--c)) 100% 100% / 24px 3px,
+        linear-gradient(var(--c), var(--c)) 100% 100% / 3px 24px;
+      background-repeat: no-repeat;
+    }
+
+    .player iframe, .player-short iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    .mission:hover, .mission:focus-within {
+      transform: translate3d(0, -6px, 0);
+      background: var(--gold);
+    }
+    .mission:hover .mission-bar, .mission:focus-within .mission-bar { background: var(--gold); border-color: var(--gold); color: #000; }
+    .mission:hover .mission-bar::before, .mission:focus-within .mission-bar::before { background: var(--night); box-shadow: 0 0 0 3px rgba(20, 38, 77, .3); }
+    .mission:hover .yt, .mission:focus-within .yt { color: #000; }
+    .mission:hover .thumb img, .yt-stage:hover .thumb img { transform: scale(1.05); }
+    .mission:hover .play, .yt-stage:hover .play, .thumb:focus-visible .play { background: var(--gold); color: #000; transform: translate3d(-50%, -50%, 0) scale(1.1); }
+    .mission:hover .brackets, .yt-stage:hover .brackets, .thumb:focus-visible .brackets { opacity: 1; transform: scale(1); }
+
+    /* ---- Client Card (Live YouTube Channel) ---- */
+    .client-card-link {
+      text-decoration: none;
+      color: var(--text);
+      display: inline-block;
+      transition: transform .22s ease;
+    }
+    .client-card-link:hover {
+      transform: translate3d(0, -5px, 0);
+    }
+    .client-card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.5rem 2rem;
+      min-width: 320px;
+      background:
+        radial-gradient(300px 180px at 100% 0%, rgba(44, 100, 168, .35), transparent 70%),
+        var(--panel);
+    }
+    .client-avatar-wrap {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      flex: none;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--cape));
+      box-shadow: 0 0 20px rgba(255, 198, 26, .25);
+    }
+    .client-avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--night);
+      display: block;
+    }
+    .client-info {
+      text-align: left;
+    }
+    .client-name {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #fff;
+      letter-spacing: .02em;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .client-handle {
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      color: var(--gold);
+      margin-top: .15rem;
+    }
+    .client-subs {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      margin-top: .55rem;
+      padding: .3rem .7rem;
+      border-radius: 4px;
+      background: rgba(20, 38, 77, .85);
+      border: 1px solid var(--cape);
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff3b3b;
+      box-shadow: 0 0 8px #ff3b3b;
+      animation: pulseDot 1.4s infinite;
+    }
+
+    /* ---- About ---- */
+    .about-box {
+      padding: 3px;
+      background: linear-gradient(135deg, var(--cape), var(--gold) 50%, var(--slate));
+      --cut: 18px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .7);
+    }
+    .about {
+      --cut: 16px;
+      position: relative;
+      padding: 2.6rem 2.4rem;
+      background:
+        radial-gradient(500px 260px at 100% 0%, rgba(44, 100, 168, .28), transparent 70%),
+        var(--panel);
+      overflow: hidden;
+    }
+    .about h3 { margin: .6rem 0 0; font-size: 1.15rem; font-weight: 700; color: var(--dusk); }
+    .about p { margin: 1.1rem 0 0; max-width: 58ch; color: #c9cde0; }
+
+    .tools { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem; position: relative; z-index: 1; }
+    .tool {
+      display: flex;
+      align-items: center;
+      gap: .9rem;
+      padding: 1rem 1.1rem;
+      border-left: 3px solid var(--gold);
+      background: rgba(255, 255, 255, .04);
+      transition: background .2s ease, transform .2s ease;
+    }
+    .tool:hover { background: rgba(255, 198, 26, .1); transform: translateX(4px); }
+    .tool b {
+      display: grid;
+      place-items: center;
+      width: 40px; height: 40px;
+      flex: none;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      color: var(--gold);
+      background: var(--night);
+      border: 1px solid var(--slate);
+    }
+    .tool strong { display: block; line-height: 1.2; }
+    .tool span { font-size: .9rem; color: var(--dusk); }
+
+    /* ---- Contact ---- */
+    .contact-box {
+      padding: 3px;
+      background: linear-gradient(135deg, var(--gold), var(--cape) 45%, var(--night));
+      --cut: 20px;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, .75);
+    }
+    .contact {
+      --cut: 18px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+      padding: 3.2rem 1.5rem 3rem;
+      background:
+        radial-gradient(520px 280px at 100% 0%, rgba(44, 100, 168, .45), transparent 70%),
+        radial-gradient(420px 260px at 0% 100%, rgba(255, 198, 26, .12), transparent 70%),
+        var(--charcoal);
+    }
+    .contact .halftone { left: 0; bottom: 0; width: 34%; height: 70%; opacity: .8; }
+    .contact > *:not(.halftone) { position: relative; }
+    .contact p { margin: .8rem auto 0; max-width: 34ch; color: #c9cde0; font-size: 1.15rem; }
+    .contact .actions { margin-top: 1.6rem; }
+
+    /* ---- Footer ---- */
+    footer { position: relative; z-index: 1; padding: 2rem 0 2.4rem; text-align: center; background: transparent; }
+    .foot-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .4rem 1rem; padding: 0; margin: 1.6rem 0 0; list-style: none; }
+    .foot-nav li { display: flex; align-items: center; gap: 1rem; }
+    .foot-nav li + li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+    .foot-nav a { color: var(--text); text-decoration: none; font-weight: 500; }
+    .foot-nav a:hover { color: var(--gold); }
+    .copy { margin-top: 1.2rem; font-size: .9rem; color: var(--dusk); display: flex; align-items: center; justify-content: center; gap: .6rem; }
+
+    /* ---- Toast ---- */
+    .toast {
+      --cut: 10px;
+      position: fixed;
+      left: 50%; bottom: 1.5rem;
+      transform: translate3d(-50%, 140%, 0);
+      padding: .7rem 1.2rem;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: #000;
+      background: var(--gold);
+      opacity: 0;
+      pointer-events: none; 
+      transition: transform .3s cubic-bezier(.2, 1.3, .4, 1), opacity .3s ease;
+      z-index: 60;
+    }
+    .toast.show { 
+      transform: translate3d(-50%, 0, 0); 
+      opacity: 1;
+    }
+
+    /* ---- Scroll reveal ---- */
+    .js .reveal { opacity: 0; transform: translate3d(0, 20px, 0); transition: opacity .5s ease, transform .5s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ================= Responsive ================= */
+    @media (max-width: 1000px) {
+      .grid, .grid-2col { grid-template-columns: 1fr; max-width: 640px; margin-inline: auto; }
+    }
+
+    @media (max-width: 640px) {
+      .nav { gap: .25rem; padding: .4rem; }
+      .nl-home { display: none; }
+      .nl { padding: .45rem .68rem; font-size: .8rem; }
+      .nav-cta { padding: .55rem .85rem; font-size: .82rem; }
+
+      .hero { padding: 7rem 0 8rem; }
+      .portrait { width: 120px; }
+      .actions .btn { flex: 1 1 100%; }
+
+      .section { padding: 3.2rem 0; }
+      .about { padding: 2rem 1.3rem; }
+      .tools { grid-template-columns: 1fr; }
+      h1 { text-shadow: 2px 2px 0 var(--cape), 4px 4px 0 #000; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Camada de fundo isolada na GPU -->
+  <div class="bg-canvas" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="Main">
+    <a class="nl nl-home" href="#home">Home</a>
+    <a class="nl" href="#longform">Long-form</a>
+    <a class="nl" href="#shorts">Shorts</a>
+    <a class="nl" href="#clients">Clients</a>
+    <a class="nl" href="#about">About Me</a>
+    <a class="nav-cta" href="#contact">Contact
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
-    <a class="btn btn-ghost cut" href="#contact">Contact Me</a>
-  </div>
+  </nav>
 
-  <!-- ================= WORKSTATION RIG + PREMIERE TIMELINE ================= -->
-  <div class="workstation-rig">
-    <div class="yt-stage player">
-      <button class="thumb" type="button" data-id="E4XdUcD8rD4" aria-label="Play Showreel">
-        <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Showreel thumbnail" decoding="async">
-        <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        <span class="brackets" aria-hidden="true"></span>
-      </button>
-    </div>
+  <!-- ================= HERO ================= -->
+  <section id="home" class="hero">
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <div class="halftone" aria-hidden="true"></div>
 
-    <!-- Premiere Pro Multi-Track Timeline Fusion -->
-    <div class="premiere-timeline">
-      <div class="playhead-mover">
-        <div class="playhead-line">
-          <div class="playhead-cap"></div>
-          <div class="playhead-spark"></div>
+    <div class="wrap hero-content">
+      <div class="portrait cut"><img src="Profile.jpg" alt="Jhony VFX" decoding="async"></div>
+      <h1>Jhony VFX | Video Editor</h1>
+      <div class="actions">
+        <a class="btn btn-gold cut" href="#longform">View Portfolio
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        </a>
+        <a class="btn btn-ghost cut" href="#contact">Contact Me</a>
+      </div>
+
+      <!-- ================= WORKSTATION RIG + PREMIERE TIMELINE ================= -->
+      <div class="workstation-rig">
+        <div class="yt-stage player">
+          <button class="thumb" type="button" data-id="E4XdUcD8rD4" aria-label="Play Showreel">
+            <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Showreel thumbnail" decoding="async">
+            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+            <span class="brackets" aria-hidden="true"></span>
+          </button>
         </div>
-      </div>
 
-      <div class="timeline-header">
-        <span>SEQUENCE 01 // GTA_MAIN_CHANNEL_CUT</span>
-        <span class="timecode-active" id="timecodeDisplay">00:04:19:58</span>
-        <span>RAZOR CUTS: 412 | DEAD AIR: 0.0s</span>
-      </div>
-
-      <div class="timeline-tracks">
-        <div class="track-row">
-          <div class="track-label">V3</div>
-          <div class="track-clips">
-            <div class="clip clip-vfx" style="width: 14%;">SUBTITLE_POP.mogrt</div>
-            <div class="clip clip-vfx" style="width: 9%; margin-left: 6%;">ZOOM_SHAKE</div>
-            <div class="clip clip-vfx" style="width: 18%; margin-left: 4%;">MOTION_TRACK_HUD.ae</div>
-            <div class="clip clip-vfx" style="width: 12%; margin-left: 8%;">KEYFRAME_PUNCH</div>
-            <div class="clip clip-vfx" style="width: 21%; margin-left: 3%;">RETENTION_HOOK_VFX</div>
+        <!-- Premiere Pro Multi-Track Timeline Fusion -->
+        <div class="premiere-timeline">
+          <div class="playhead-mover">
+            <div class="playhead-line">
+              <div class="playhead-cap"></div>
+              <div class="playhead-spark"></div>
+            </div>
           </div>
-        </div>
 
-        <div class="track-row">
-          <div class="track-label">V2</div>
-          <div class="track-clips">
-            <div class="clip clip-cam" style="width: 22%;">FACECAM_REACTION_01</div>
-            <div class="clip clip-cam" style="width: 15%;">CAM_CROP_TIGHT</div>
-            <div class="clip clip-cam" style="width: 28%;">SQUAD_POV_SWITCH</div>
-            <div class="clip clip-cam" style="width: 19%;">CAM_SHAKE_PEAK</div>
-            <div class="clip clip-cam" style="width: 16%;">OUTRO_PUNCH</div>
+          <div class="timeline-header">
+            <span>SEQUENCE 01 // GTA_MAIN_CHANNEL_CUT</span>
+            <span class="timecode-active" id="timecodeDisplay">00:04:19:58</span>
+            <span>RAZOR CUTS: 412 | DEAD AIR: 0.0s</span>
           </div>
-        </div>
 
-        <div class="track-row">
-          <div class="track-label">V1</div>
-          <div class="track-clips">
-            <div class="clip clip-vod" style="width: 11%;">GTA_RAW_01</div>
-            <div class="clip clip-vod" style="width: 8%;">CUT_02</div>
-            <div class="clip clip-vod" style="width: 14%;">HEIST_CHASE_60FPS</div>
-            <div class="clip clip-vod" style="width: 9%;">CUT_04</div>
-            <div class="clip clip-vod" style="width: 16%;">LEONIDA_DRIFT_POV</div>
-            <div class="clip clip-vod" style="width: 11%;">EXPLOSION_SYNC</div>
-            <div class="clip clip-vod" style="width: 15%;">POLICE_ESCAPE</div>
-            <div class="clip clip-vod" style="width: 16%;">FINAL_CLUTCH</div>
-          </div>
-        </div>
+          <div class="timeline-tracks">
+            <div class="track-row">
+              <div class="track-label">V3</div>
+              <div class="track-clips">
+                <div class="clip clip-vfx" style="width: 14%;">SUBTITLE_POP.mogrt</div>
+                <div class="clip clip-vfx" style="width: 9%; margin-left: 6%;">ZOOM_SHAKE</div>
+                <div class="clip clip-vfx" style="width: 18%; margin-left: 4%;">MOTION_TRACK_HUD.ae</div>
+                <div class="clip clip-vfx" style="width: 12%; margin-left: 8%;">KEYFRAME_PUNCH</div>
+                <div class="clip clip-vfx" style="width: 21%; margin-left: 3%;">RETENTION_HOOK_VFX</div>
+              </div>
+            </div>
 
-        <div class="track-row">
-          <div class="track-label">A1</div>
-          <div class="track-clips">
-            <div class="clip clip-sfx" style="width: 19%;">WHOOSH_HIT.wav</div>
-            <div class="clip clip-sfx" style="width: 14%; margin-left: 2%;">BASS_DROP_SUB.wav</div>
-            <div class="clip clip-sfx" style="width: 24%; margin-left: 3%;">RISER_TENSION_BUILD.wav</div>
-            <div class="clip clip-sfx" style="width: 17%; margin-left: 2%;">MEME_STINGER_EQ</div>
-            <div class="clip clip-sfx" style="width: 18%; margin-left: 1%;">MASTER_LIMITER_-1dB</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- ================= FIM DA WORKSTATION RIG ================= -->
+            <div class="track-row">
+              <div class="track-label">V2</div>
+              <div class="track-clips">
+                <div class="clip clip-cam" style="width: 22%;">FACECAM_REACTION_01</div>
+                <div class="clip clip-cam" style="width: 15%;">CAM_CROP_TIGHT</div>
+                <div class="clip clip-cam" style="width: 28%;">SQUAD_POV_SWITCH</div>
+                <div class="clip clip-cam" style="width: 19%;">CAM_SHAKE_PEAK</div>
+                <div class="clip clip-cam" style="width: 16%;">OUTRO_PUNCH</div>
+              </div>
+            </div>
 
-</div>
+            <div class="track-row">
+              <div class="track-label">V1</div>
+              <div class="track-clips">
+                <div class="clip clip-vod" style="width: 11%;">GTA_RAW_01</div>
+                <div class="clip clip-vod" style="width: 8%;">CUT_02</div>
+                <div class="clip clip-vod" style="width: 14%;">HEIST_CHASE_60FPS</div>
+                <div class="clip clip-vod" style="width: 9%;">CUT_04</div>
+                <div class="clip clip-vod" style="width: 16%;">LEONIDA_DRIFT_POV</div>
+                <div class="clip clip-vod" style="width: 11%;">EXPLOSION_SYNC</div>
+                <div class="clip clip-vod" style="width: 15%;">POLICE_ESCAPE</div>
+                <div class="clip clip-vod" style="width: 16%;">FINAL_CLUTCH</div>
+              </div>
+            </div>
 
-<svg class="skyline" id="skyline" aria-hidden="true"></svg>
-
-
-  <!-- Grade 2x2 (2 vídeos em cima e 2 embaixo) -->
-  <div class="grid grid-2col reveal">
-
-    <!-- Vídeo 1 -->
-    <article class="mission cut">
-      <div class="mission-inner cut">
-        <div class="mission-bar">
-          <h3>Re-edit Smii7Y Playing with viewers</h3>
-          <a class="yt" href="https://youtu.be/sXsU-hm3DoA" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
-        </div>
-        <div class="player">
-          <button class="thumb" type="button" data-id="sXsU-hm3DoA" aria-label="Play Mission 1">
-            <img src="https://i.ytimg.com/vi/sXsU-hm3DoA/hqdefault.jpg" alt="Mission 1 thumbnail" loading="lazy" decoding="async">
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-            <span class="brackets" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Vídeo 2 -->
-    <article class="mission cut">
-      <div class="mission-inner cut">
-        <div class="mission-bar">
-          <h3>Re-edit Vanoss Gaming GTA Online Funny Moments</h3>
-          <a class="yt" href="https://youtu.be/m_-s-QOl-8U" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
-        </div>
-        <div class="player">
-          <button class="thumb" type="button" data-id="m_-s-QOl-8U" aria-label="Play Mission 2">
-            <img src="https://i.ytimg.com/vi/m_-s-QOl-8U/hqdefault.jpg" alt="Mission 2 thumbnail" loading="lazy" decoding="async">
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-            <span class="brackets" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Vídeo 3 -->
-    <article class="mission cut">
-      <div class="mission-inner cut">
-        <div class="mission-bar">
-          <h3>Re-edit Ghillie Master GTA 6 News</h3>
-          <a class="yt" href="https://youtu.be/E4XdUcD8rD4" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
-        </div>
-        <div class="player">
-          <button class="thumb" type="button" data-id="E4XdUcD8rD4" aria-label="Play Mission 3">
-            <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Mission 3 thumbnail" loading="lazy" decoding="async">
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-            <span class="brackets" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Vídeo 4 -->
-    <article class="mission cut">
-      <div class="mission-inner cut">
-        <div class="mission-bar">
-          <h3>Re-edit Live Stream Highlight</h3>
-          <a class="yt" href="https://youtu.be/FyPJMcFW1PQ" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
-        </div>
-        <div class="player">
-          <button class="thumb" type="button" data-id="FyPJMcFW1PQ" aria-label="Play Mission 4">
-            <img src="" alt="Mission 4 thumbnail" loading="lazy" decoding="async">
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-            <span class="brackets" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </article>
-
-    <!-- 
-    ================================================================================
-    COMO ADICIONAR UM NOVO VÍDEO LONG-FORM:
-    1. Copie um bloco inteiro começando de <article class="mission cut"> até </article>
-    2. Cole logo aqui embaixo dessa linha.
-    3. Mude o título dentro do <h3>Seu Título Aqui</h3>
-    4. Mude o link href="..." na tag <a class="yt">
-    5. Coloque a URL do YouTube dentro de data-id="..." na tag <button>
-    Pronto, o site vai puxar o vídeo e a capa automaticamente!
-    ================================================================================
-    -->
-
-  </div>
-</div>
-
-
-  <div class="grid reveal">
-    <!-- Short 1 -->
-    <article class="mission cut">
-      <div class="mission-inner cut">
-        <div class="mission-bar">
-          <h3>Rockstar marketing over Miami</h3>
-        </div>
-        <div class="player-short">
-          <button class="thumb" type="button" data-id="https://youtube.com/shorts/_vyqTx5pIJU?feature=share" aria-label="Play Short 1">
-            <img src="" alt="Short 1 thumbnail" loading="lazy" decoding="async">
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-            <span class="brackets" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Short 2 -->
-    <article class="mission cut">
-      <div class="mission-inner cut">
-        <div class="mission-bar">
-          <h3>Peek hole on GTA 6</h3>
-        </div>
-        <div class="player-short">
-          <button class="thumb" type="button" data-id="https://youtube.com/shorts/25MVgNW1imk?feature=share" aria-label="Play Short 2">
-            <img src="" alt="Short 2 thumbnail" loading="lazy" decoding="async">
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-            <span class="brackets" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </article>
-
-    <!-- Short 3 -->
-    <article class="mission cut">
-      <div class="mission-inner cut">
-        <div class="mission-bar">
-          <h3>GTA Burguer Shot IRL</h3>
-        </div>
-        <div class="player-short">
-          <button class="thumb" type="button" data-id="https://youtube.com/shorts/t2hdQiUSsTk?feature=share" aria-label="Play Short 3">
-            <img src="" alt="Short 3 thumbnail" loading="lazy" decoding="async">
-            <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-            <span class="brackets" aria-hidden="true"></span>
-          </button>
-        </div>
-      </div>
-    </article>
-
-    <!-- 
-    ================================================================================
-    COMO ADICIONAR UM NOVO SHORT:
-    1. Copie o bloco de código de <article class="mission cut"> até </article> (dos Shorts).
-    2. Cole logo aqui embaixo dessa linha.
-    3. Altere o título em <h3>
-    4. Coloque a URL do Short dentro de data-id="..." na tag <button>
-    Pronto, a thumbnail de celular carregará sozinha!
-    ================================================================================
-    -->
-
-  </div>
-</div>
-
-
-  <div style="display: flex; justify-content: center; gap: 1.4rem; flex-wrap: wrap;">
-    <a class="client-card-link" href="https://www.youtube.com/@GTAJailbreak" target="_blank" rel="noopener noreferrer" aria-label="Visit GTAJailbreak YouTube Channel">
-      <div class="about-box cut">
-        <div class="client-card cut">
-          <div class="client-avatar-wrap">
-            <img class="client-avatar" id="clientAvatar" src="https://unavatar.io/youtube/GTAJailbreak" alt="GTAJailbreak Avatar" loading="lazy" decoding="async">
-          </div>
-          <div class="client-info">
-            <h3 class="client-name">GTAJailbreak</h3>
-            <div class="client-handle">@GTAJailbreak</div>
-            <div class="client-subs">
-              <span class="live-dot" aria-hidden="true"></span>
-              <span id="liveSubCount">YouTube Creator</span>
+            <div class="track-row">
+              <div class="track-label">A1</div>
+              <div class="track-clips">
+                <div class="clip clip-sfx" style="width: 19%;">WHOOSH_HIT.wav</div>
+                <div class="clip clip-sfx" style="width: 14%; margin-left: 2%;">BASS_DROP_SUB.wav</div>
+                <div class="clip clip-sfx" style="width: 24%; margin-left: 3%;">RISER_TENSION_BUILD.wav</div>
+                <div class="clip clip-sfx" style="width: 17%; margin-left: 2%;">MEME_STINGER_EQ</div>
+                <div class="clip clip-sfx" style="width: 18%; margin-left: 1%;">MASTER_LIMITER_-1dB</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </a>
-  </div>
-</div>
+      <!-- ================= FIM DA WORKSTATION RIG ================= -->
 
+    </div>
 
-      <div class="tools">
-        <div class="tool">
-          <b>Pr</b>
-          <div><strong>Adobe Premiere Pro</strong><span>Narrative &amp; Storytelling</span></div>
-        </div>
-        <div class="tool">
-          <b>Ae</b>
-          <div><strong>Adobe After Effects</strong><span>Motion Graphics &amp; Visual Effects</span></div>
+    <svg class="skyline" id="skyline" aria-hidden="true"></svg>
+  </section>
+
+  <div class="hazard" aria-hidden="true"></div>
+
+  <!-- ================= LONG-FORM ================= -->
+  <section id="longform" class="section">
+    <div class="section-halftone-right" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="head reveal">
+        <h2>Long-form</h2>
+      </div>
+
+      <!-- Alterado para classe grid-2col para travar em 2 colunas e não esticar -->
+      <div class="grid grid-2col reveal">
+
+        <!-- Vídeo 1 -->
+               <article class="mission cut">
+          <div class="mission-inner cut">
+            <div class="mission-bar">
+              <h3>Re-edit TypicalGamer Live Stream Cut</h3>
+              <a class="yt" href="https://youtu.be/FyPJMcFW1PQ" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
+            </div>
+            <div class="player">
+              <button class="thumb" type="button" data-id="FyPJMcFW1PQ" aria-label="Play Mission 4">
+                <img src="" alt="Mission 4 thumbnail" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="brackets" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Vídeo 2 -->
+        <article class="mission cut">
+          <div class="mission-inner cut">
+            <div class="mission-bar">
+              <h3>Re-edit Vanoss Gaming GTA Online Funny Moments</h3>
+              <a class="yt" href="https://youtu.be/m_-s-QOl-8U" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
+            </div>
+            <div class="player">
+              <button class="thumb" type="button" data-id="m_-s-QOl-8U" aria-label="Play Mission 2">
+                <img src="https://i.ytimg.com/vi/m_-s-QOl-8U/hqdefault.jpg" alt="Mission 2 thumbnail" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="brackets" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Vídeo 3 -->
+        <article class="mission cut">
+          <div class="mission-inner cut">
+            <div class="mission-bar">
+              <h3>Re-edit Ghillie Master GTA 6 News</h3>
+              <a class="yt" href="https://youtu.be/E4XdUcD8rD4" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
+            </div>
+            <div class="player">
+              <button class="thumb" type="button" data-id="E4XdUcD8rD4" aria-label="Play Mission 3">
+                <img src="https://i.ytimg.com/vi/E4XdUcD8rD4/hqdefault.jpg" alt="Mission 3 thumbnail" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="brackets" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Vídeo 4 (Seu vídeo novo!) -->
+        <article class="mission cut">
+          <div class="mission-inner cut">
+            <div class="mission-bar">
+              <h3>Re-edit Smii7Y Playing with viewers</h3>
+              <a class="yt" href="https://youtu.be/sXsU-hm3DoA" target="_blank" rel="noopener noreferrer">YouTube &#8599;</a>
+            </div>
+            <div class="player">
+              <button class="thumb" type="button" data-id="sXsU-hm3DoA" aria-label="Play Mission 1">
+                <img src="https://i.ytimg.com/vi/sXsU-hm3DoA/hqdefault.jpg" alt="Mission 1 thumbnail" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="brackets" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 
+        ================================================================================
+        COMO ADICIONAR UM NOVO VÍDEO LONG-FORM:
+        1. Copie um bloco inteiro começando de <article class="mission cut"> até </article>
+        2. Cole logo aqui embaixo dessa linha.
+        3. Mude o título dentro do <h3>Seu Título Aqui</h3>
+        4. Mude o link href="..." na tag <a class="yt">
+        5. Coloque a URL do YouTube dentro de data-id="..." na tag <button>
+        Pronto, o site vai puxar o vídeo e a capa automaticamente!
+        ================================================================================
+        -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SHORTS ================= -->
+  <section id="shorts" class="section">
+    <div class="section-halftone-left" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="head reveal">
+        <h2>Shorts</h2>
+      </div>
+
+      <div class="grid reveal">
+        <!-- Short 1 -->
+        <article class="mission cut">
+          <div class="mission-inner cut">
+            <div class="mission-bar">
+              <h3>Rockstar marketing over Miami</h3>
+            </div>
+            <div class="player-short">
+              <button class="thumb" type="button" data-id="https://youtube.com/shorts/_vyqTx5pIJU?feature=share" aria-label="Play Short 1">
+                <img src="" alt="Short 1 thumbnail" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="brackets" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Short 2 -->
+        <article class="mission cut">
+          <div class="mission-inner cut">
+            <div class="mission-bar">
+              <h3>Peek hole on GTA 6</h3>
+            </div>
+            <div class="player-short">
+              <button class="thumb" type="button" data-id="https://youtube.com/shorts/25MVgNW1imk?feature=share" aria-label="Play Short 2">
+                <img src="" alt="Short 2 thumbnail" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="brackets" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Short 3 -->
+        <article class="mission cut">
+          <div class="mission-inner cut">
+            <div class="mission-bar">
+              <h3>GTA Burguer Shot IRL</h3>
+            </div>
+            <div class="player-short">
+              <button class="thumb" type="button" data-id="https://youtube.com/shorts/t2hdQiUSsTk?feature=share" aria-label="Play Short 3">
+                <img src="" alt="Short 3 thumbnail" loading="lazy" decoding="async">
+                <span class="play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+                <span class="brackets" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- 
+        ================================================================================
+        COMO ADICIONAR UM NOVO SHORT:
+        1. Copie o bloco de código de <article class="mission cut"> até </article> (dos Shorts).
+        2. Cole logo aqui embaixo dessa linha.
+        3. Altere o título em <h3>
+        4. Coloque a URL do Short dentro de data-id="..." na tag <button>
+        Pronto, a thumbnail de celular carregará sozinha!
+        ================================================================================
+        -->
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CLIENTS ================= -->
+  <section id="clients" class="section">
+    <div class="section-halftone-right" aria-hidden="true"></div>
+    <div class="wrap reveal">
+      <div class="head">
+        <h2>Clients</h2>
+      </div>
+      
+      <div style="display: flex; justify-content: center; gap: 1.4rem; flex-wrap: wrap;">
+        <a class="client-card-link" href="https://www.youtube.com/@GTAJailbreak" target="_blank" rel="noopener noreferrer" aria-label="Visit GTAJailbreak YouTube Channel">
+          <div class="about-box cut">
+            <div class="client-card cut">
+              <div class="client-avatar-wrap">
+                <img class="client-avatar" id="clientAvatar" src="https://unavatar.io/youtube/GTAJailbreak" alt="GTAJailbreak Avatar" loading="lazy" decoding="async">
+              </div>
+              <div class="client-info">
+                <h3 class="client-name">GTAJailbreak</h3>
+                <div class="client-handle">@GTAJailbreak</div>
+                <div class="client-subs">
+                  <span class="live-dot" aria-hidden="true"></span>
+                  <span id="liveSubCount">YouTube Creator</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section id="about" class="section">
+    <div class="section-halftone-left" aria-hidden="true"></div>
+    <div class="wrap reveal">
+      <div class="about-box cut">
+        <div class="about cut">
+          <h2>About Me</h2>
+          <h3>Video Editor for Gaming Creators</h3>
+          <p>GTA is by far my favorite franchise to edit. I can adapt to whatever format you need. I reply fast and I'll keep you in the loop step-by-step as I work. The only time I'll take a while to get back to you is if I'm asleep lol.</p>
+
+          <div class="tools">
+            <div class="tool">
+              <b>Pr</b>
+              <div><strong>Adobe Premiere Pro</strong><span>Narrative &amp; Storytelling</span></div>
+            </div>
+            <div class="tool">
+              <b>Ae</b>
+              <div><strong>Adobe After Effects</strong><span>Motion Graphics &amp; Visual Effects</span></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
 
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" class="section">
+    <div class="wrap reveal">
+      <div class="contact-box cut">
+        <div class="contact cut">
+          <div class="halftone" aria-hidden="true"></div>
+          <h2>Contact</h2>
+          <p>Send me a message and let's work together!</p>
 
-      <div class="actions">
-        <a class="btn btn-gold cut" href="mailto:jonathan.kusniik@gmail.com">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 7.2L4.6 7H4v.8l8 5.6 8-5.6V7h-.6L12 12.2z"/></svg>
-          Email
-        </a>
-        <a class="btn btn-x cut" href="https://x.com/jhonyvfx" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg>
-          X / Twitter
-        </a>
-        <button class="btn btn-discord cut" type="button" id="discord" data-user="jhonyvfx" aria-label="Copy Discord username: jhonyvfx">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 5.4A17 17 0 0 0 15.4 4l-.2.4a15.700 15.700 0 0 1 3.700 1.800 13.300 13.300 0 0 0-5-1.500 13.500 13.500 0 0 0-1.900 0 13.300 13.300 0 0 0-5 1.500A15.700 15.700 0 0 1 10.800 4.400L10.600 4a17 17 0 0 0-4.200 1.400C3.700 9.400 3 13.300 3.300 17.100a17 17 0 0 0 5.200 2.600l1.100-1.800c-.6-.2-1.200-.5-1.700-.9l.4-.3a12 12 0 0 0 10.400 0l.4.300c-.5.400-1.100.7-1.700.9l1.100 1.800a17 17 0 0 0 5.200-2.600c.4-4.400-.7-8.300-3.100-11.700zM9.300 14.800c-1 0-1.800-.9-1.800-2s.8-2 1.800-2 1.800.9 1.800 2-.8 2-1.800 2zm5.400 0c-1 0-1.800-.9-1.800-2s.8-2 1.800-2 1.800.9 1.800 2-.8 2-1.800 2z"/></svg>
-          Discord: jhonyvfx
-        </button>
+          <div class="actions">
+            <a class="btn btn-gold cut" href="mailto:jonathan.kusniik@gmail.com">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 7.2L4.6 7H4v.8l8 5.6 8-5.6V7h-.6L12 12.2z"/></svg>
+              Email
+            </a>
+            <a class="btn btn-x cut" href="https://x.com/jhonyvfx" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.3L2 3h6.4l4.4 5.8L17.8 3zm-1.1 16.2h1.7L7.4 4.7H5.6l11.1 14.5z"/></svg>
+              X / Twitter
+            </a>
+            <button class="btn btn-discord cut" type="button" id="discord" data-user="jhonyvfx" aria-label="Copy Discord username: jhonyvfx">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.6 5.4A17 17 0 0 0 15.4 4l-.2.4a15.700 15.700 0 0 1 3.700 1.800 13.300 13.300 0 0 0-5-1.500 13.500 13.500 0 0 0-1.900 0 13.300 13.300 0 0 0-5 1.500A15.700 15.700 0 0 1 10.800 4.400L10.600 4a17 17 0 0 0-4.200 1.400C3.700 9.400 3 13.300 3.300 17.100a17 17 0 0 0 5.200 2.600l1.100-1.800c-.6-.2-1.200-.5-1.700-.9l.4-.3a12 12 0 0 0 10.400 0l.4.300c-.5.400-1.100.7-1.700.9l1.100 1.800a17 17 0 0 0 5.200-2.600c.4-4.400-.7-8.300-3.100-11.700zM9.300 14.800c-1 0-1.800-.9-1.800-2s.8-2 1.800-2 1.800.9 1.800 2-.8 2-1.800 2zm5.400 0c-1 0-1.800-.9-1.800-2s.8-2 1.800-2 1.800.9 1.800 2-.8 2-1.800 2z"/></svg>
+              Discord: jhonyvfx
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <div class="hazard" aria-hidden="true"></div>
+  <footer>
+    <div class="wrap">
+      <ul class="foot-nav">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#longform">Long-form</a></li>
+        <li><a href="#shorts">Shorts</a></li>
+        <li><a href="#clients">Clients</a></li>
+        <li><a href="#about">About me</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="copy">&copy; <span id="year">2026</span> Jhony VFX</div>
+    </div>
+  </footer>
+
+  <div class="toast cut" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ---------- Live YouTube Subscriber Counter & Avatar (@GTAJailbreak) ---------- */
+    (function () {
+      const channelId = 'UCfL-CGVP2GzIrlisweFZ1Gg';
+      const subEl = document.getElementById('liveSubCount');
+      const avatarEl = document.getElementById('clientAvatar');
+
+      function formatSubs(count) {
+        const n = Number(count);
+        if (isNaN(n) || n <= 0) return null;
+        return new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 }).format(n) + ' subscribers';
+      }
+
+      async function fetchLiveChannelData() {
+        try {
+          const res = await fetch('https://mixerno.space/api/youtube-channel-counter/user/' + channelId);
+          if (res.ok) {
+            const data = await res.json();
+            const subs = data?.counts?.find(c => c.value === 'subscribers')?.count;
+            const avatar = data?.user?.find(u => u.value === 'pfp')?.count;
+            if (subs && subEl) {
+              const formatted = formatSubs(subs);
+              if (formatted) subEl.textContent = formatted;
+            }
+            if (avatar && avatarEl) {
+              avatarEl.src = avatar;
+            }
+            return;
+          }
+        } catch (e) {}
+
+        try {
+          const res2 = await fetch('https://decapi.me/youtube/subcount/' + channelId);
+          if (res2.ok) {
+            const text = (await res2.text()).trim();
+            if (text && !text.toLowerCase().includes('error') && subEl) {
+              const cleanNum = text.replace(/[^0-9]/g, '');
+              subEl.textContent = formatSubs(cleanNum) || (text + ' subscribers');
+            }
+          }
+        } catch (e) {}
+      }
+
+      fetchLiveChannelData();
+      setInterval(fetchLiveChannelData, 60000);
+    })();
+
+    /* ---------- Live Premiere Pro Timecode + Pausa Automática Fora de Tela ---------- */
+    (function () {
+      const tcEl = document.getElementById('timecodeDisplay');
+      const heroEl = document.getElementById('home');
+      if (!tcEl || !heroEl) return;
+
+      let frame = 0;
+      let timer = null;
+
+      function startTimer() {
+        if (timer) return;
+        timer = setInterval(function () {
+          frame = (frame + 1) % 60;
+          const sec = String(19 + Math.floor(frame / 30)).padStart(2, '0');
+          const f = String(frame).padStart(2, '0');
+          tcEl.textContent = '00:04:' + sec + ':' + f;
+        }, 65);
+      }
+
+      function stopTimer() {
+        clearInterval(timer);
+        timer = null;
+      }
+
+      const heroObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            heroEl.classList.remove('paused');
+            startTimer();
+          } else {
+            heroEl.classList.add('paused');
+            stopTimer();
+          }
+        });
+      }, { threshold: 0.05 });
+
+      heroObserver.observe(heroEl);
+    })();
+
+    /* ---------- Seeded random (so the skyline always looks the same) ---------- */
+    function rng(seed) {
+      return function () {
+        seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    /* ---------- Twinkling stars (Otimizadas) ---------- */
+    (function () {
+      const box = document.getElementById('stars');
+      const r = rng(21);
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < 28; i++) {
+        const s = document.createElement('i');
+        s.style.left = (r() * 100) + '%';
+        s.style.top = (r() * 70) + '%';
+        const size = 1 + Math.floor(r() * 3);
+        s.style.width = s.style.height = size + 'px';
+        s.style.animationDelay = (r() * 4).toFixed(2) + 's';
+        s.style.animationDuration = (3 + r() * 3).toFixed(2) + 's';
+        frag.appendChild(s);
+      }
+      box.appendChild(frag);
+    })();
+
+    /* ---------- Gotham skyline ---------- */
+    (function () {
+      const svg = document.getElementById('skyline');
+      const NS = 'http://www.w3.org/2000/svg';
+      const H = 150;
+      let lastW = 0;
+
+      function el(name, attrs) {
+        const n = document.createElementNS(NS, name);
+        for (const k in attrs) n.setAttribute(k, attrs[k]);
+        return n;
+      }
+
+      function layer(r, W, fill, minH, maxH, lit, spires) {
+        const g = el('g', {});
+        let x = -10;
+        while (x < W + 10) {
+          const w = 28 + Math.floor(r() * 54);
+          const h = minH + r() * (maxH - minH);
+          const y = H - h;
+          g.appendChild(el('rect', { x: x, y: y, width: w, height: h + 2, fill: fill }));
+          if (spires && r() < 0.14) {
+            const cx = x + w / 2;
+            g.appendChild(el('polygon', { points: (cx - 3) + ',' + y + ' ' + cx + ',' + (y - 24) + ' ' + (cx + 3) + ',' + y, fill: fill }));
+          }
+          if (lit) {
+            for (let wy = y + 10; wy < H - 8; wy += 12) {
+              for (let wx = x + 7; wx < x + w - 8; wx += 11) {
+                if (r() < 0.12) {
+                  g.appendChild(el('rect', { x: wx, y: wy, width: 4, height: 6, fill: '#ffc61a', opacity: (0.25 + r() * 0.6).toFixed(2) }));
+                }
+              }
+            }
+          }
+          x += w + Math.floor(r() * 6);
+        }
+        return g;
+      }
+
+      function build() {
+        const W = Math.round(svg.getBoundingClientRect().width) || 1200;
+        if (Math.abs(W - lastW) < 40) return;
+        lastW = W;
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+        svg.setAttribute('preserveAspectRatio', 'none');
+        svg.textContent = '';
+        const r = rng(7);
+        svg.appendChild(layer(r, W, '#16244a', 55, 130, false, false));
+        svg.appendChild(layer(r, W, '#07080b', 30, 100, true, true));
+      }
+
+      build();
+      let t;
+      window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(build, 150); }, { passive: true });
+    })();
+
+    /* ---------- Extrator Inteligente de ID + Correção de Thumbnails Cinzas ---------- */
+    (function () {
+      function extractYouTubeId(input) {
+        if (!input) return '';
+        const str = input.trim();
+        if (str.includes('COLE_O_LINK') || str.includes('SEU_ID')) return '';
+        if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return str;
+        const match = str.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?.*v=|embed\/|shorts\/|v\/))([a-zA-Z0-9_-]{11})/);
+        return match ? match[1] : str;
+      }
+
+      document.querySelectorAll('.thumb').forEach(function (btn) {
+        const rawId = btn.dataset.id;
+        const cleanId = extractYouTubeId(rawId);
+        const img = btn.querySelector('img');
+
+        if (cleanId && img) {
+          img.src = 'https://i.ytimg.com/vi/' + cleanId + '/maxresdefault.jpg';
+
+          img.addEventListener('load', function () {
+            if (img.naturalWidth <= 120 && !img.src.includes('hqdefault.jpg')) {
+              img.src = 'https://i.ytimg.com/vi/' + cleanId + '/hqdefault.jpg';
+            }
+          });
+
+          img.addEventListener('error', function () {
+            if (!img.src.includes('hqdefault.jpg')) {
+              img.src = 'https://i.ytimg.com/vi/' + cleanId + '/hqdefault.jpg';
+            }
+          });
+        }
+
+        btn.addEventListener('click', function () {
+          const videoId = extractYouTubeId(btn.dataset.id);
+          if (!videoId) {
+            alert('Adicione o link ou ID do vídeo do YouTube no atributo data-id deste card!');
+            return;
+          }
+          const player = btn.parentElement;
+          const f = document.createElement('iframe');
+          f.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&playsinline=1';
+          f.title = btn.getAttribute('aria-label').replace('Play', 'Video:');
+          f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+          f.referrerPolicy = 'strict-origin-when-cross-origin';
+          f.allowFullscreen = true;
+          player.textContent = '';
+          player.appendChild(f);
+        });
+      });
+    })();
+
+    /* ---------- Scroll reveal + active nav link ---------- */
+    (function () {
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function (n) { io.observe(n); });
+
+      const links = {};
+      document.querySelectorAll('.nl').forEach(function (a) { 
+        const href = a.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          links[href.slice(1)] = a; 
+        }
+      });
+      const spy = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && links[e.target.id]) {
+            Object.values(links).forEach(function (a) { a.classList.remove('active'); });
+            links[e.target.id].classList.add('active');
+          }
+        });
+      }, { rootMargin: '-45% 0px -50% 0px' });
+      
+      ['home', 'longform', 'shorts', 'clients', 'about'].forEach(function (id) { 
+        const el = document.getElementById(id);
+        if (el) spy.observe(el); 
+      });
+    })();
+
+    /* ---------- Copy Discord username ---------- */
+    (function () {
+      const btn = document.getElementById('discord');
+      const toast = document.getElementById('toast');
+      let timer;
+      function show(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+      }
+      btn.addEventListener('click', async function () {
+        const user = btn.dataset.user;
+        try { await navigator.clipboard.writeText(user); show('Copied: ' + user); }
+        catch (e) { show('Discord: ' + user); }
+      });
+    })();
+  </script>
+</body>
+</html>
